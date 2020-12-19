@@ -1,0 +1,23 @@
+div#city-div {
+    background-color: #eeeeee;
+    height: auto;
+    width: 200px;
+    box-shadow: 10px 10px grey;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  #greet {
+
+    text-decoration: underline;
+    color: darkslategray;
+    font-weight: bolder;
+  }
+  
+  #clickInstruct {
+    font-weight: bolder;
+    color:burlywood;
+  }
+  h4.semi-invisible {
+    visibility: hidden;
+  }
