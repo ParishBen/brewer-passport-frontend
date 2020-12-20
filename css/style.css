@@ -25,3 +25,7 @@ div#city-div {
     display: block;
     
   }
+
+  #user-form {
+    position:right;
+  }

@@ -8,13 +8,16 @@
     </head>
     <body>
         <nav> <a href="http://localhost:3000/wishlist">Brewery W</a></nav>
+<div id=welcome></div>
+        <form id='user-form'><input type = "text" placeholder= "Your Name" id = 'users-name'><input type = "text" placeholder= "Username" id= "username"><input type="submit"></form>
     <h1>This is a title</h1>
     <h3 id='greet'>Which city are you off to?</h3>
     <form id="city-form"> <input type = "text" placeholder= "Destination City" id="city-search-input"><input type = "submit">
     </form>
-<h4 id="clickInstruct" class="semi-invisible">Click on Brewery for more info</h4>
+<h4 id="clickInstruct" class="semi-invisible">Click on Brewery to show/hide more info</h4>
     <div id="city-div"></div>
 </body>
     <script src="./src/index.js"></script>
     <script src="./src/brewery.js"></script>
+    <script src="./src/user.js"></script>
 </html>
