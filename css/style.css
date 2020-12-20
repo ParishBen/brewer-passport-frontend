@@ -18,6 +18,10 @@ div#city-div {
     font-weight: bolder;
     color:burlywood;
   }
-  h4.semi-invisible {
+  .semi-invisible {
     visibility: hidden;
+  }
+  .brewery-class-info {
+    display: block;
+    
   }
