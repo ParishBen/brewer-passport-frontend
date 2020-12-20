@@ -8,6 +8,7 @@ const cityDiv = document.getElementById("city-div")
 
 
 
+
 // function toggle_visibility(id) {
 //     var e = document.getElementsByClassName(id);
 //     if(e.style.display == 'block')
@@ -50,9 +51,17 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
     console.log(records)
     let counter = 0
     while (counter < records.length){
-    let p = document.createElement('p')
+        let p = document.createElement('p')
         p.innerText = records[counter].fields.name_breweries
         p.className = "brewery-info-class"
+        const wishList = document.createElement('button')
+        const favoritedBrewery = document.createElement('button')
+        wishList.setAttribute('class', 'wishList')
+        wishList.innerText = "Add to Wishlist"
+        favoritedBrewery.innerText = "Add to Favorites"
+        favoritedBrewery.setAttribute('class', 'favoriteList')
+        p.appendChild(wishList)
+        p.appendChild(favoritedBrewery)
     let brewery = new Brewery(records[counter].fields.city, records[counter].fields.state, records[counter].fields.address1, records[counter].fields.country, records[counter].fields.phone, records[counter].fields.name_breweries, records[counter].fields.descript, records[counter].fields.website)
     breweries.push(brewery)
         console.log(brewery)
@@ -74,16 +83,20 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
             //theP.addEventListener("click", myClick).unless(!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:'))
             function myClick (e){
                 let breweryP = e.target
-                let clickedBrewery = breweries.find(brew => brew.name == breweryP.innerText)
+                let ret = breweryP.innerText.replace('Add to WishlistAdd to Favorites', '')
+                let clickedBrewery = breweries.find(brew => brew.name == ret)
                 console.log(breweryP.children.length)
+                console.log(breweryP.innerText)
+                console.log(ret)
                 let newP = document.createElement('p')
-                if (breweryP.children.length == 0 ){
+                if (breweryP.children.length == 2 ){
                     newP.innerText+=(`Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`)
                     newP.className = 'semi-invisible'
                     breweryP.append(newP)} 
-                    if (breweryP.children[0].className == 'semi-invisible'){
-                        breweryP.children[0].className = 'brewery-subinfo-class'}
-                    else {breweryP.children[0].className = 'semi-invisible' && removePspace() }
+                    console.log(breweryP.children[2])
+                    if (breweryP.children[2].className == 'semi-invisible'){
+                        breweryP.children[2].className = 'brewery-subinfo-class'}
+                    else {breweryP.children[2].className = 'semi-invisible' && removePspace() }
                 console.log(breweryP.innerText.includes('Address:'))
                 console.log(breweryP)
                 console.log(newP)
