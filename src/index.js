@@ -7,6 +7,7 @@ const cityInput = document.getElementById("city-search-input")
 const cityDiv = document.getElementById("city-div")
 
 
+
 // example grabbing already from DB data...
 // function fetchTrainers(){ 
 //     return fetch(TRAINERS_URL)
@@ -128,7 +129,7 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         cityDiv.append(p)
         counter++
     }
-addToFavorites
+
     //changeBreweriesIds()
 })
 }
@@ -229,27 +230,6 @@ let structure = function toTitleCase( str )
    return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join( " " );
 }
 
- function addToWishList(e) {
-     console.log(e.target.parentElement)
-     let breweryP = e.target.parentElement
-     let ret = breweryP.innerText.replace('Add to WishlistAdd to Favorites', '')
-     let clickedBrewery = breweries.find(brew => brew.name == ret)
-
-     return fetch('https://localhost:3000/wishlist', {
-         method: 'POST',
-         headers: {
-             'Accept':'application/json',
-             'content': 'ap'
-            }
-     })
-     
-     console.log(clickedBrewery)
-    console.log("YOU'LL TOTALLY GET TO THIS BREW ONE DAY")
-
-}
-function addToFavorites(){
-    console.log("TOTLALLLLY IN YOUR FAVES!")
-}
 
 // function toggle_visibility(id) {
 //     var e = document.getElementsByClassName(id);

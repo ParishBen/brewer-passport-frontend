@@ -13,6 +13,84 @@ class Brewery{
 }
 let breweries = [];
 
+// const wishList = document.createElement('button')
+// const favoritedBrewery = document.createElement('button')
+// wishList.setAttribute('class', 'wishList')
+// wishList.innerText = "Add to Wishlist"
+// favoritedBrewery.innerText = "Add to Favorites"
+// favoritedBrewery.setAttribute('class', 'favoriteList')
+let wishlistURL = 'http://localhost:3000/wishlists'
+
+
+function addToWishList(e) {
+     
+    let breweryP = e.target.parentElement
+    let usersName = document.getElementById('welcoming')
+    let username= usersName.innerText.toString()
+    let runame = username.split(' ').slice(1).join('')
+    console.log(runame.value)
+   console.log(breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist')))
+    let ret = breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist'))
+    let clickedBrewery = breweries.find(brew => brew.name == ret)
+       console.log(ret)
+       console.log(clickedBrewery)
+    return fetch(wishlistURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json',
+            Accept:'application/json'
+            
+           },
+        body: JSON.stringify({
+            "name": clickedBrewery.name,
+            "city": clickedBrewery.city,
+            "address": clickedBrewery.address,
+            "phoneNum": clickedBrewery.phoneNum,
+            "website": clickedBrewery.website,
+            "description": clickedBrewery.description,
+            "country": clickedBrewery.country,
+            "state": clickedBrewery.state,
+            "user_id": '',
+            "username": runame
+            
+           })
+    })
+   .then(resp => resp.json())
+   .then(json=> console.log(json))
+   .catch(err=> console.log(err))
+}
+
+function addToFavorites(e){
+   let breweryP = e.target.parentElement
+   console.log(breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist')))
+    let ret = breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist'))
+    let clickedBrewery = breweries.find(brew => brew.name == ret)
+       console.log(ret)
+       console.log(clickedBrewery)
+    return fetch('https://localhost:3000/breweries', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept':'application/json'
+            
+           },
+           body: JSON.stringify({
+            "name": clickedBrewery.name,
+            "city": clickedBrewery.city,
+            "address": clickedBrewery.address,
+            "phoneNum": clickedBrewery.phoneNum,
+            "website": clickedBrewery.website,
+            "description": clickedBrewery.description,
+            "country": clickedBrewery.country,
+            "state": clickedBrewery.state
+
+           })
+    })    
+}
+
+
+
+
 // class Star{
 //     constructor(x, y){
 //       this.x = x

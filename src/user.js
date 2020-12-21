@@ -1,5 +1,5 @@
 let userForm = document.getElementById('user-form')
-const USER_URL = 'http://localhost:3000/users'
+const userURL = 'http://localhost:3000/users'
 userForm.addEventListener("submit", userSubmit)
 
 function userSubmit(e){
@@ -9,10 +9,19 @@ function userSubmit(e){
     let userDiv = document.getElementById("welcome")
     let h4 = document.createElement('h4')
      h4.style.color = 'Brown'
+     h4.id = 'welcoming'
     h4.innerText =  `Welcome, ${userName.value}`
-    userDiv.append(h4)
+    let signout = document.createElement('a');
+    signout.href = "/localhost:3000/logout";
+    signout.target = '_blank';
+    signout.innerHTML = "Log Out";
+    let par = document.createElement('p')
+    par.id = "signout"
+    par.appendChild(signout)
+    //par.addEventListener("click", fetchSignOut)
+    userDiv.appendChild(h4)
     
-    fetch(USER_URL, {
+    fetch(userURL, {
         method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -23,11 +32,15 @@ function userSubmit(e){
               "username": userName.value
              })
             })
+           
     
     userForm.remove()
 }
 
-function postToy(toy_data) {
+
+
+
+//function postToy(toy_data) {
     //     fetch('http://localhost:3000/toys', {
     //         method: 'POST',
     //         headers: {
