@@ -54,8 +54,9 @@ function addToWishList(e) {
             "username": runame
             
            })
-    })
-   .then(resp => resp.json())
+        })
+       
+   .then( function(){wishbutton.className = 'wishlist-class'})
    .then(json=> console.log(json))
    .catch(err=> console.log(err))
 }

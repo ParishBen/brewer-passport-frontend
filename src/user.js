@@ -2,6 +2,19 @@ let userForm = document.getElementById('user-form')
 const userURL = 'http://localhost:3000/users'
 userForm.addEventListener("submit", userSubmit)
 
+let nav = document.querySelector('nav')
+let wishbutton = document.createElement('button')
+wishbutton.innerText = "Your Wish List"
+wishbutton.id = "wishbutton"
+wishbutton.className = "semi-invisible"
+let favoritebutton = document.createElement("button")
+favoritebutton.innerText = "Favorited List"
+favoritebutton.id = "favoritebutton"
+favoritebutton.className = "semi-invisible"
+nav.append(wishbutton, favoritebutton)
+
+
+
 function userSubmit(e){
     e.preventDefault()
     let usersName = document.getElementById('users-name')
@@ -11,15 +24,7 @@ function userSubmit(e){
      h4.style.color = 'Brown'
      h4.id = 'welcoming'
     h4.innerText =  `Welcome, ${userName.value}`
-    let signout = document.createElement('a');
-    signout.href = "/localhost:3000/logout";
-    signout.target = '_blank';
-    signout.innerHTML = "Log Out";
-    let par = document.createElement('p')
-    par.id = "signout"
-    par.appendChild(signout)
-    //par.addEventListener("click", fetchSignOut)
-    userDiv.appendChild(h4)
+     userDiv.appendChild(h4)
     
     fetch(userURL, {
         method: 'POST',
