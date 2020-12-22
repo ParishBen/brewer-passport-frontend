@@ -68,7 +68,23 @@ function addToWishList(e) {
 }
 
 
-
+//  FINISH FUNCTIONALITY OF DELETE
+//function deleteBrewWish(e){
+//     let breweryP = e.target.parentElement
+//     let cutBrewery = breweryP.innerText.toString().split(' ').slice(1).join(' ')
+//     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - '))
+//     let usersName = document.getElementById('welcoming')
+//     let username= usersName.innerText.toString()
+//     let runame = username.split(' ').slice(1).join('')
+//     return fetch(wishlistURL+runame, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type':'application/json',
+//             Accept:'application/json'
+            
+//            },
+//     }
+// }
 
 
 function addToFavorites(e){
@@ -101,7 +117,7 @@ function addToFavorites(e){
 
 
 
-
+//CONSTRUCTING CLASSES
 // class Star{
 //     constructor(x, y){
 //       this.x = x
@@ -149,20 +165,7 @@ function addToFavorites(e){
 //       }
 //       this.sound = createSound(this.note, this.waveType, this.delayTime, this.releaseTime)
 //     }
-//     show(){
-//       noStroke()
-//       fill(255)
-//       ellipse(this.x, this.y, this.radius)
-//     }
-  
-//     update(){
-//       if (this.direction === 0){
-//         this.x += this.speed
-//       } else if (this.direction === 1){
-//         this.y += this.speed
-//       }
-//     }
-//   }
+//
 
 
 wishbutton.addEventListener("click", fetchWishList)
@@ -186,17 +189,24 @@ function renderWishList(that){
     that.forEach(function(brewery){ 
         let li = document.createElement('li')
         li.setAttribute('id', 'wishlistLI')
+        let delBtn = document.createElement('button')
+        delBtn.innerHTML = "Delete"
+        delBtn.addEventListener('click',function(e){console.log(e.target.parentElement)})
         li.innerHTML = `Brewery: ${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
-    ol.append(li)})
+        li.append(delBtn)
+        ol.append(li)})
     wishListDiv.appendChild(ol)
-    
-   while (wishListDiv.children.length <=1){
-   wishListDiv.className = 'wishList-Div'}
-   wishListDiv.className = 'semi-invisible'
-   }
+    if(wishListDiv.children.length <=1){
+        wishListDiv.className = "wishList-Class"
+    } else {wishListDiv.className = "semi-invisible" && removeWishList()}
+}
+   
 
 
 function removeWishList(){
+    let wl = document.querySelector('div#wishListDiv')
     let ol = document.querySelector('ol#wishlistOL')
-    ol.remove()
+    let newOL = wl.removeChild(wl.firstChild)
+    newOL.className = 'wishList-Class?'
+    
 }

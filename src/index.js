@@ -22,7 +22,7 @@ const cityDiv = document.getElementById("city-div")
 //     })
 // }
 
-//             IMPORTANT WAYS TO FETCH
+//             EXAMPLE WAYS OF FETCH req
 
 // function postToy(toy_data) {
 //     fetch('http://localhost:3000/toys', {
@@ -42,8 +42,7 @@ const cityDiv = document.getElementById("city-div")
 //       .then((obj_toy) => {
 //         let new_toy = renderToys(obj_toy)
 //         divCollect.append(new_toy)
-//         console.log("obj_toy: "+ obj_toy.name)
-//         console.log("obj_toy_name: "+obj_toy.image)
+//         
 //       })
 //   }
   
@@ -64,10 +63,6 @@ const cityDiv = document.getElementById("city-div")
 //       })
 //       .then(res => res.json())
 //       .then((like_obj => {
-//         // console.log("e: "+e);
-//         // console.log("e.target: "+e.target);
-//         // console.log("more"+more);
-//         // console.log("e.target.previousElementSibling: "     + e.target.previousElementSibling      );
 //         e.target.previousElementSibling.innerText = `${more} likes`;
 //       }))
 //   }
@@ -128,42 +123,34 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         favoritedBrewery.addEventListener("click", addToFavorites)
         cityDiv.append(p)
         counter++
-    }
-
-    //changeBreweriesIds()
+    }  
 })
 }
-    // let records = rec.records
-    // let counter = 0;
+
     
-   
+
     
-        
-    //if (!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:')){
-        //theP.addEventListener("click", myClick).unless(!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:'))
             function myClick (e){
                 let breweryP = e.target
                 let ret = breweryP.innerText.replace('Add to WishlistAdd to Favorites', '')
                 let clickedBrewery = breweries.find(brew => brew.name == ret)
-                console.log(breweryP.children.length)
-                console.log(breweryP.innerText)
-                console.log(ret)
+               // console.log(breweryP.children.length)
+                //console.log(breweryP.innerText)
+                //console.log(ret)
                 let newP = document.createElement('p')
                 if (breweryP.children.length == 2 ){
                     newP.innerText+=(`Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`)
                     newP.className = 'semi-invisible'
                     breweryP.append(newP)} 
-                    console.log(breweryP.children[2])
+                    //console.log(breweryP.children[2])
                     if (breweryP && breweryP.children[2].className == 'semi-invisible'){
                         breweryP.children[2].className = 'brewery-subinfo-class'}
-                    // if (breweryP.children.length == 3){
-                    //     breweryP.children[2].className = 'semi-invisible' && removePspace() 
-                    // }
+                    
                     else {breweryP.children[2].className = 'semi-invisible' && removePspace(breweryP) }
                     
-                console.log(breweryP)
-                console.log(newP)
-                console.log(breweryP.children)
+                // console.log(breweryP)
+                // console.log(newP)
+                // console.log(breweryP.children)
                 }
                 
                
@@ -180,29 +167,7 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
             }
             
     
-//     let theP = document.querySelectorAll('#addedBrewInfoToP');
-//     console.log(theP)
-//     theP.forEach(
-//         p=>  p.addEventListener("click", toggleBrewInfo).addEventListener("click", myClick).addEventListener("click", displayBreweriesInfo))
 
-
-
-
-
-
-//         function displayBreweriesInfo(){
-//     let thePs = document.querySelectorAll('#addedBrewInfoToP')
-//     thePs.forEach(p=> p.id = `${p.innerText}`) 
-//     let counter = 0;
-//     while (counter < thePs.length){
-//         let p = thePs[counter]
-//     let clickedBrewery = breweries.find(brew => brew.name == `${p.innerText}`)
-//     console.log(thePs, clickedBrewery)
-//     counter++
-//     if (!p.innerText.includes('Address:') && !p.innerText.includes('Phone Num:') && !p.innerText.includes('Website:') && !p.innerText.includes('Description:')){
-//         //theP.addEventListener("click", myClick).unless(!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:'))
-//     thePs.forEach(theP=> theP.innerText+=(`\n Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`))}
-// }}
 
 
 
@@ -214,26 +179,22 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
             h4.className = 'showMoreInfo'
             console.log(h4)
         }
-        function toggleBrewInfo() {
-            var x = document.getElementsByClassName("brewery-info-class");
-    if(x.className == 'brewery-info-class')
-       x.className = 'semi-invisible';
-       else
-    x.className = 'brewery-info-class';
- }
+
+
+
+       
+        let structure = function toTitleCase( str ) 
+        {
+            let nowStr = str.toString()
+           return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join( " " );
+        }
          
     
    // https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&rows=20&start=30
 
-   //cityFetcher()
-// brewery.record.fields.name_breweries // console.log(brewery.record.fields))
+  
 
 
-let structure = function toTitleCase( str ) 
-{
-    let nowStr = str.toString()
-   return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join( " " );
-}
 
 
 // function toggle_visibility(id) {
