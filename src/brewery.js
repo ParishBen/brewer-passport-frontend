@@ -13,13 +13,19 @@ class Brewery{
 }
 let breweries = [];
 
-// const wishList = document.createElement('button')
-// const favoritedBrewery = document.createElement('button')
-// wishList.setAttribute('class', 'wishList')
-// wishList.innerText = "Add to Wishlist"
-// favoritedBrewery.innerText = "Add to Favorites"
-// favoritedBrewery.setAttribute('class', 'favoriteList')
-let wishlistURL = 'http://localhost:3000/wishlists'
+let nav = document.querySelector('nav')
+let wishbutton = document.createElement('button')
+wishbutton.innerText = "Your Wish List"
+wishbutton.id = "wishbutton"
+wishbutton.className = "wishlist-button-class"
+let favoritebutton = document.createElement("button")
+favoritebutton.innerText = "Favorited List"
+favoritebutton.id = "favoritebutton"
+favoritebutton.className = "favorite-button-class"
+nav.append(wishbutton, favoritebutton)
+let wishlistURL = 'http://localhost:3000/wishlists/'
+ 
+
 
 
 function addToWishList(e) {
@@ -56,10 +62,14 @@ function addToWishList(e) {
            })
         })
        
-   .then( function(){wishbutton.className = 'wishlist-class'})
-   .then(json=> console.log(json))
+   .then(fetchWishList())
+   
    .catch(err=> console.log(err))
 }
+
+
+
+
 
 function addToFavorites(e){
    let breweryP = e.target.parentElement
@@ -153,3 +163,40 @@ function addToFavorites(e){
 //       }
 //     }
 //   }
+
+
+wishbutton.addEventListener("click", fetchWishList)
+function fetchWishList(){
+    let usersName = document.getElementById('welcoming')
+    let username= usersName.innerText.toString()
+    let runame = username.split(' ').slice(1).join('')
+    return fetch(wishlistURL+runame)
+    .then(resp=> resp.json())
+    .then(json=> renderWishList(json))
+
+
+}
+
+function renderWishList(that){
+    let wishListDiv = document.querySelector('div#wishListDiv')
+    console.log(wishListDiv)
+     
+    let ol = document.createElement('ol')
+    ol.id = 'wishlistOL'
+    that.forEach(function(brewery){ 
+        let li = document.createElement('li')
+        li.setAttribute('id', 'wishlistLI')
+        li.innerHTML = `Brewery: ${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+    ol.append(li)})
+    wishListDiv.appendChild(ol)
+    
+   while (wishListDiv.children.length <=1){
+   wishListDiv.className = 'wishList-Div'}
+   wishListDiv.className = 'semi-invisible'
+   }
+
+
+function removeWishList(){
+    let ol = document.querySelector('ol#wishlistOL')
+    ol.remove()
+}

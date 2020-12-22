@@ -82,7 +82,7 @@ cityForm.addEventListener("submit", citySubmit)
 function citySubmit(){
     event.preventDefault()
     showMeTheInput()
-    countryFetcher()
+    cityFetcher()
     makeVisible()
 }
 
@@ -100,7 +100,7 @@ function showMeTheInput(){
 }
 
 
-function countryFetcher(){
+function cityFetcher(){
 return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&rows=100&refine.city=${structure(cityInput.value)}`)
 .then(resp=> resp.json())
 .then(function(objs){ 
@@ -114,18 +114,18 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         p.className = "brewery-info-class"
         const wishList = document.createElement('button')
         const favoritedBrewery = document.createElement('button')
-        wishList.setAttribute('class', 'wishList')
+        wishList.setAttribute('class', 'addToWishlist')
         wishList.innerText = "Add to Wishlist"
         favoritedBrewery.innerText = "Add to Favorites"
-        favoritedBrewery.setAttribute('class', 'favoriteList')
+        favoritedBrewery.setAttribute('class', 'addToFavoritelist')
         p.appendChild(wishList)
         p.appendChild(favoritedBrewery)
     let brewery = new Brewery(records[counter].fields.city, records[counter].fields.state, records[counter].fields.address1, records[counter].fields.country, records[counter].fields.phone, records[counter].fields.name_breweries, records[counter].fields.descript, records[counter].fields.website)
     breweries.push(brewery)
         console.log(brewery)
         p.addEventListener("click", myClick)
-        wishList.addEventListener("click", addToWishList, true)
-        favoritedBrewery.addEventListener("click", addToFavorites, true)
+        wishList.addEventListener("click", addToWishList)
+        favoritedBrewery.addEventListener("click", addToFavorites)
         cityDiv.append(p)
         counter++
     }
@@ -154,50 +154,55 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
                     newP.className = 'semi-invisible'
                     breweryP.append(newP)} 
                     console.log(breweryP.children[2])
-                    if (breweryP.children[2].className == 'semi-invisible'){
+                    if (breweryP && breweryP.children[2].className == 'semi-invisible'){
                         breweryP.children[2].className = 'brewery-subinfo-class'}
-                    else {breweryP.children[2].className = 'semi-invisible' && removePspace() }
+                    // if (breweryP.children.length == 3){
+                    //     breweryP.children[2].className = 'semi-invisible' && removePspace() 
+                    // }
+                    else {breweryP.children[2].className = 'semi-invisible' && removePspace(breweryP) }
                     
                 console.log(breweryP)
                 console.log(newP)
                 console.log(breweryP.children)
-                
-                //  if (!(breweryP.innerText.includes('Address:') && breweryP.innerText.includes('Phone Num:') && breweryP.innerText.includes('Website:') && breweryP.innerText.includes('Description:'))){
-                //     ///////////theP.addEventListener("click", myClick).unless(!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:'))
-                //     breweryP.innerText+=(`\n Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`)
-                // breweryP.className = 'brewery-info-class'
-                
-                
-                //     } else { breweryP.className = 'semi-invisible'
-                //         console.log(breweryP.className)
-                   // }
                 }
                 
+               
+               
                 function removePspace(){
+               
                 let p = document.querySelector('p.brewery-subinfo-class')
-                p.remove()
+                let u = document.querySelector('p.undefined')
+                if(u){
+                  return  u.remove()
+                }
+                if (p ){
+                return p.remove()}
             }
             
     
-    let theP = document.querySelectorAll('#addedBrewInfoToP');
-    console.log(theP)
-    theP.forEach(
-        p=>  p.addEventListener("click", toggleBrewInfo).addEventListener("click", myClick).addEventListener("click", displayBreweriesInfo))
+//     let theP = document.querySelectorAll('#addedBrewInfoToP');
+//     console.log(theP)
+//     theP.forEach(
+//         p=>  p.addEventListener("click", toggleBrewInfo).addEventListener("click", myClick).addEventListener("click", displayBreweriesInfo))
 
 
-        function displayBreweriesInfo(){
-    let thePs = document.querySelectorAll('#addedBrewInfoToP')
-    thePs.forEach(p=> p.id = `${p.innerText}`) 
-    let counter = 0;
-    while (counter < thePs.length){
-        let p = thePs[counter]
-    let clickedBrewery = breweries.find(brew => brew.name == `${p.innerText}`)
-    console.log(thePs, clickedBrewery)
-    counter++
-    if (!p.innerText.includes('Address:') && !p.innerText.includes('Phone Num:') && !p.innerText.includes('Website:') && !p.innerText.includes('Description:')){
-        //theP.addEventListener("click", myClick).unless(!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:'))
-    thePs.forEach(theP=> theP.innerText+=(`\n Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`))}
-}}
+
+
+
+
+//         function displayBreweriesInfo(){
+//     let thePs = document.querySelectorAll('#addedBrewInfoToP')
+//     thePs.forEach(p=> p.id = `${p.innerText}`) 
+//     let counter = 0;
+//     while (counter < thePs.length){
+//         let p = thePs[counter]
+//     let clickedBrewery = breweries.find(brew => brew.name == `${p.innerText}`)
+//     console.log(thePs, clickedBrewery)
+//     counter++
+//     if (!p.innerText.includes('Address:') && !p.innerText.includes('Phone Num:') && !p.innerText.includes('Website:') && !p.innerText.includes('Description:')){
+//         //theP.addEventListener("click", myClick).unless(!theP.innerText.includes('Address:') && !theP.innerText.includes('Phone Num:') && !theP.innerText.includes('Website:') && !theP.innerText.includes('Description:'))
+//     thePs.forEach(theP=> theP.innerText+=(`\n Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`))}
+// }}
 
 
 
@@ -220,7 +225,7 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
     
    // https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&rows=20&start=30
 
-   //countryFetcher()
+   //cityFetcher()
 // brewery.record.fields.name_breweries // console.log(brewery.record.fields))
 
 
@@ -238,3 +243,5 @@ let structure = function toTitleCase( str )
 //     else
 //        e.style.display = 'block';
 //  }
+
+

@@ -1,7 +1,7 @@
 div#city-div {
     background-color: #eeeeee;
     height: auto;
-    width: 200px;
+    width: max-content;
     box-shadow: 10px 10px grey;
     padding: 10px;
     border-radius: 10px;

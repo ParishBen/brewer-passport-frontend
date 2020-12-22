@@ -2,16 +2,7 @@ let userForm = document.getElementById('user-form')
 const userURL = 'http://localhost:3000/users'
 userForm.addEventListener("submit", userSubmit)
 
-let nav = document.querySelector('nav')
-let wishbutton = document.createElement('button')
-wishbutton.innerText = "Your Wish List"
-wishbutton.id = "wishbutton"
-wishbutton.className = "semi-invisible"
-let favoritebutton = document.createElement("button")
-favoritebutton.innerText = "Favorited List"
-favoritebutton.id = "favoritebutton"
-favoritebutton.className = "semi-invisible"
-nav.append(wishbutton, favoritebutton)
+
 
 
 
