@@ -24,6 +24,7 @@ favoritebutton.id = "favoritebutton"
 favoritebutton.className = "favorite-button-class"
 nav.append(wishbutton, favoritebutton)
 let wishlistURL = 'http://localhost:3000/wishlists/'
+let favoritelistURL = 'http://localhost:3000/favoritelists/'
  
 
 
@@ -61,30 +62,58 @@ function addToWishList(e) {
             
            })
         })
+           .then(function(){
+               breweryP.style.color = "green"})
+       .then(function(){
+           let divList = document.querySelector('div.wishList-show')
+           if(divList && divList.children.length >= 1){
+               fetchWishList()
+               fetchWishList()
+           } else {
+               fetchWishList()
+           }
+       })
+       .catch(err=> console.log(err))
+    }
+    //    .then(fetchWishList())
        
-   .then(fetchWishList())
-   
-   .catch(err=> console.log(err))
-}
+    //    .catch(err=> console.log(err))
 
 
 //  FINISH FUNCTIONALITY OF DELETE
-//function deleteBrewWish(e){
-//     let breweryP = e.target.parentElement
-//     let cutBrewery = breweryP.innerText.toString().split(' ').slice(1).join(' ')
-//     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - '))
-//     let usersName = document.getElementById('welcoming')
-//     let username= usersName.innerText.toString()
-//     let runame = username.split(' ').slice(1).join('')
-//     return fetch(wishlistURL+runame, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type':'application/json',
-//             Accept:'application/json'
+function deleteBrewWish(e){
+    let breweryP = e.target.parentElement
+    console.log(breweryP)
+    let cutBrewery = breweryP.innerText.toString().split(' ').slice(1).join(' ')
+    console.log(cutBrewery)
+
+    let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
+    
+    let usersName = document.getElementById('welcoming')
+    let username= usersName.innerText.toString()
+    let runame = username.split(' ').slice(1).join('')
+    console.log(runame, brewName)
+    return fetch(wishlistURL+runame+'/'+brewName, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type':'application/json',
+            Accept:'application/json'
             
-//            },
-//     }
-// }
+           },
+    })
+    .then(fetchWishList())
+    .then(fetchWishList())
+    .then(function(){
+        let ps = document.querySelectorAll('p.brewery-info-class')
+        for (p of ps){
+            let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
+            brewName == titlep ? p.style.color = "black" : ''
+            console.log(brewName,titlep)
+        }
+    })
+    .catch(err=> console.log(err))
+}
+
 
 
 function addToFavorites(e){
@@ -169,6 +198,7 @@ function addToFavorites(e){
 
 
 wishbutton.addEventListener("click", fetchWishList)
+
 function fetchWishList(){
     let usersName = document.getElementById('welcoming')
     let username= usersName.innerText.toString()
@@ -180,33 +210,63 @@ function fetchWishList(){
 
 }
 
-function renderWishList(that){
-    let wishListDiv = document.querySelector('div#wishListDiv')
-    console.log(wishListDiv)
+
+
+function renderWishList(theCurrentUser){
+   // let wishListDiv = document.querySelector('div#wishListDiv')
+   let wishListDiv = document.querySelector('div#wishListDiv')
+   //wishListDiv.className = 'semi-invisible'
+   console.log(wishListDiv)
      
     let ol = document.createElement('ol')
     ol.id = 'wishlistOL'
-    that.forEach(function(brewery){ 
+    let counter = 0;
+    theCurrentUser.forEach(function(brewery){ 
         let li = document.createElement('li')
-        li.setAttribute('id', 'wishlistLI')
+        li.setAttribute('id', `wishlistLI-${counter}`)
         let delBtn = document.createElement('button')
         delBtn.innerHTML = "Delete"
-        delBtn.addEventListener('click',function(e){console.log(e.target.parentElement)})
-        li.innerHTML = `Brewery: ${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
-        li.append(delBtn)
-        ol.append(li)})
-    wishListDiv.appendChild(ol)
-    if(wishListDiv.children.length <=1){
-        wishListDiv.className = "wishList-Class"
-    } else {wishListDiv.className = "semi-invisible" && removeWishList()}
+        delBtn.addEventListener('click',deleteBrewWish)
+        li.innerHTML += `Brewery: ${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+        li.append(' ', delBtn)
+        ol.append(li)
+    counter++
+})
+    if (ol.firstChild.innerHTML != ''){
+        wishListDiv.appendChild(ol)
+        ol.className = 'semi-invisible'
+        
+    }
+        console.log(wishListDiv.children.length, wishListDiv.className, ol.children.length, ol.className)
+    if ( wishListDiv.children.length <=1 && ol.className == 'semi-invisible'){ wishListDiv.className = 'wishList-show';
+    ol.className = 'ordered-list-show';
+} if(wishListDiv.children.length > 1 ) { 
+    ol.className = 'ordered-list-show';
+     wishListDiv.className = 'wishList-show';
+    while (wishListDiv.firstChild){
+        wishListDiv.removeChild(wishListDiv.firstChild)
+    }
+}
+     //removeWishList()}
+     //ol.className = 'semi-invisible';
+    //if(wishListDiv.className == 'semi-invisible'){
+        //wishListDiv.className = "wishList-Class"
+ // wishListDiv.className = "wishList-Div"}
+    console.log(ol.className, wishListDiv.className)
 }
    
 
 
-function removeWishList(){
-    let wl = document.querySelector('div#wishListDiv')
-    let ol = document.querySelector('ol#wishlistOL')
-    let newOL = wl.removeChild(wl.firstChild)
-    newOL.className = 'wishList-Class?'
+// function removeWishList(){
+//     let wl = document.querySelector('div.wishList-show')
+//     let ol = document.querySelector('ol.ordered-list-show')
+//     let unol = document.querySelector('ol.undefined')
     
-}
+//     if (ol){
+//     ol.remove()
+//     }
+//     if (unol){
+//         unol.remove()
+//     }
+
+  
