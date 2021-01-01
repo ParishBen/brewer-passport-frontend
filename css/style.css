@@ -1,10 +1,11 @@
 div#city-div {
     background-color: #eeeeee;
     height: auto;
-    width: max-content;
+    width:fit-content;
     box-shadow: 10px 10px grey;
     padding: 10px;
     border-radius: 10px;
+    border-color:cornsilk;
   }
 
   #greet {
@@ -25,7 +26,27 @@ div#city-div {
     display: block;
     
   }
+  .wishList-show {
+    width:fit-content;
+    height:auto;
+    background-color:lightgreen;
+  }
+  .favoriteList-show {
+    width:fit-content;
+    height: auto;
+    background-color:lightgoldenrodyellow
+  }
 
+  h3#wishListHeader{
+    text-decoration:underline;
+    color:seagreen;
+    text-align:center;
+  }
+  h3#favoriteListHeader{
+    text-decoration:underline;
+    color:goldenrod;
+    text-align:center;
+  }
   #user-form {
     position:right;
   }

@@ -1,6 +1,5 @@
 const BASE_URL = "http://localhost:3000"
-const TRAINERS_URL = `${BASE_URL}/wishlist`
-const POKEMONS_URL = `${BASE_URL}/favorites`
+
 console.log("this is script to file")
 const cityForm = document.getElementById("city-form")
 const cityInput = document.getElementById("city-search-input")
@@ -79,6 +78,7 @@ function citySubmit(){
     showMeTheInput()
     cityFetcher()
     makeVisible()
+    cityForm.reset()
 }
 
 function showMeTheInput(){
