@@ -83,12 +83,15 @@ function deleteBrewWish(e){
     console.log(cutBrewery)
 
     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
+    if(brewName.match(/[#]/))
+    console.log(brewName.match(/[#]/))
+    brewName = brewName.replace('#', '%23')
     
     let usersName = document.getElementById('welcoming')
     let username= usersName.innerText.toString()
     let runame = username.split(' ').slice(1).join('')
     console.log(runame, brewName)
-    return fetch(wishlistURL+runame+'/'+brewName, {
+    return fetch(wishlistURL+runame+'/'+`${brewName}`, {
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',
@@ -174,33 +177,34 @@ console.log(ol.className, wishListDiv.className)
 
 
 function switchToFaves(e){
-console.log(e.target, e.target.parentElement)
-let clickedBrewery= {};
-let switchingBrewery = e.target.parentElement.innerText.toString().split(' ').slice(1).join(' ')
-//console.log(switchingBrewery)
-let brewName = switchingBrewery.substring(0, switchingBrewery.indexOf(' - Address'))
-let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
-    //console.log(runame, brewName)
-    return fetch(wishlistURL+runame+'/'+brewName, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type':'application/json',
-            Accept:'application/json'
+    deleteBrewWish(e)
+// console.log(e.target, e.target.parentElement)
+// let clickedBrewery= {};
+// let switchingBrewery = e.target.parentElement.innerText.toString().split(' ').slice(1).join(' ')
+// //console.log(switchingBrewery)
+// let brewName = switchingBrewery.substring(0, switchingBrewery.indexOf(' - Address'))
+// let usersName = document.getElementById('welcoming')
+//     let username= usersName.innerText.toString()
+//     let runame = username.split(' ').slice(1).join('')
+//     //console.log(runame, brewName)
+//     return fetch(wishlistURL+runame+'/'+brewName, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type':'application/json',
+//             Accept:'application/json'
             
-           },
-    })
-    .then(fetchWishList())
-    .then(fetchWishList())
-    .then(function(){
-        let ps = document.querySelectorAll('p.brewery-info-class')
-        for (p of ps){
-            let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
-            brewName == titlep ? p.style.color = "black" : ''
-            console.log(brewName,titlep)
-        }
-    })
+//            },
+//     })
+//     .then(fetchWishList())
+//     .then(fetchWishList())
+//     .then(function(){
+//         let ps = document.querySelectorAll('p.brewery-info-class')
+//         for (p of ps){
+//             let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
+//             brewName == titlep ? p.style.color = "black" : ''
+//             console.log(brewName,titlep)
+//         }
+//     })
     .then(addFaveFromWishList(e))
     .catch(err=> console.log(err))
 }
@@ -408,7 +412,10 @@ function renderFavoriteList(theCurrentUser){
     console.log(cutBrewery)
 
     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
-    
+   
+    if(brewName.match(/[#]/))
+    console.log(brewName.match(/[#]/))
+    brewName = brewName.replace('#', '%23')
     let usersName = document.getElementById('welcoming')
     let username= usersName.innerText.toString()
     let runame = username.split(' ').slice(1).join('')
