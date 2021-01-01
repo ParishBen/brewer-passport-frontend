@@ -79,6 +79,7 @@ function citySubmit(){
     cityFetcher()
     makeVisible()
     cityForm.reset()
+    clearSearch()
 }
 
 function showMeTheInput(){
@@ -168,8 +169,20 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
             
     
 
+            function clearSearch(){
+                let clearBtn = document.createElement('button')
+                clearBtn.innerHTML = 'Clear Results'
+                clearBtn.className = 'clearing-button'
+                if (!document.querySelector('button.clearing-button'))
+                cityDiv.append(clearBtn)
+                clearBtn.addEventListener('click', clearCityDiv)
+            }
 
-
+            function clearCityDiv(){
+                while (cityDiv.firstChild){
+                    cityDiv.removeChild(cityDiv.firstChild)
+                }
+            }
 
 
 

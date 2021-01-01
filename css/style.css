@@ -30,11 +30,15 @@ div#city-div {
     width:fit-content;
     height:auto;
     background-color:lightgreen;
+    box-shadow: 5px 5px seagreen;
+    border-color: grey;
   }
   .favoriteList-show {
     width:fit-content;
     height: auto;
-    background-color:lightgoldenrodyellow
+    background-color:lightgoldenrodyellow;
+    border-color: grey;
+    box-shadow: 5px 5px goldenrod;
   }
 
   h3#wishListHeader{
