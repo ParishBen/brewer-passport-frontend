@@ -26,16 +26,21 @@ nav.append(wishbutton, favoritebutton)
 let wishlistURL = 'http://localhost:3000/wishlists/'
 let favoritelistURL = 'http://localhost:3000/favoritelists/'
  
-
-
-
-function addToWishList(e) {
-     
-    let breweryP = e.target.parentElement
+function grabUserName(){
     let usersName = document.getElementById('welcoming')
     let username= usersName.innerText.toString()
     let runame = username.split(' ').slice(1).join('')
-    console.log(runame.value)
+    return runame
+}
+
+
+function addToWishList(e) {
+     //grabUserName()
+    let breweryP = e.target.parentElement
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
+    //console.log(runame.value)
    console.log(breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist')))
     let ret = breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist'))
     let clickedBrewery = breweries.find(brew => brew.name == ret)
@@ -58,7 +63,7 @@ function addToWishList(e) {
             "country": clickedBrewery.country,
             "state": clickedBrewery.state,
             "user_id": '',
-            "username": runame
+            "username": grabUserName()
             
            })
         })
@@ -87,11 +92,11 @@ function deleteBrewWish(e){
     console.log(brewName.match(/[#]/))
     brewName = brewName.replace('#', '%23')
     
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
-    console.log(runame, brewName)
-    return fetch(wishlistURL+runame+'/'+`${brewName}`, {
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
+    //console.log(runame, brewName)
+    return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',
@@ -119,10 +124,10 @@ function deleteBrewWish(e){
 wishbutton.addEventListener("click", fetchWishList)
 
 function fetchWishList(){
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
-    return fetch(wishlistURL+runame)
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
+    return fetch(wishlistURL+grabUserName())
     .then(resp=> resp.json())
     .then(json=> renderWishList(json))
 
@@ -211,9 +216,9 @@ function switchToFaves(e){
 
 function addFaveFromWishList(e){
     let breweryP = e.target.parentElement
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
 
     let clickedBrewery = {};
     let ret = breweryP.innerText.toString().split(' ').slice(1).join(' ')
@@ -258,7 +263,7 @@ function addFaveFromWishList(e){
             "country": clickedBrewery.country,
             "state": clickedBrewery.state,
             "user_id": '',
-            "username": runame
+            "username": grabUserName()
             
            })
         })
@@ -288,11 +293,11 @@ function addFaveFromWishList(e){
 function addToFavorites(e) {
      
     let breweryP = e.target.parentElement
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
     
-    console.log(runame.value)
+   // console.log(runame.value)
    console.log(breweryP)
    console.log(breweryP.innerText.includes('Add to Wishlist'))
     
@@ -328,7 +333,7 @@ function addToFavorites(e) {
             "country": clickedBrewery.country,
             "state": clickedBrewery.state,
             "user_id": '',
-            "username": runame
+            "username": grabUserName()
             
            })
         })
@@ -353,10 +358,10 @@ function addToFavorites(e) {
 favoritebutton.addEventListener("click", fetchFavoriteList)
 
 function fetchFavoriteList(){
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
-    return fetch(favoritelistURL+runame)
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
+    return fetch(favoritelistURL+grabUserName())
     .then(resp=> resp.json())
     .then(json=> renderFavoriteList(json))
 
@@ -416,11 +421,11 @@ function renderFavoriteList(theCurrentUser){
     if(brewName.match(/[#]/))
     console.log(brewName.match(/[#]/))
     brewName = brewName.replace('#', '%23')
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
-    console.log(runame, brewName)
-    return fetch(favoritelistURL+runame+'/'+brewName, {
+    // let usersName = document.getElementById('welcoming')
+    // let username= usersName.innerText.toString()
+    // let runame = username.split(' ').slice(1).join('')
+    //console.log(runame, brewName)
+    return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), {
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',

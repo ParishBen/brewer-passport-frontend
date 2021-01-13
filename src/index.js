@@ -81,7 +81,7 @@ function citySubmit(){
     cityForm.reset()
     clearSearch()
 }
-
+ 
 function showMeTheInput(){
     console.log( cityInput.value)
     let div = document.getElementById("city-div")
@@ -94,10 +94,11 @@ function showMeTheInput(){
     console.log(ul, li)
     
 }
-
-
+//https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&facet=city&rows=100&refine.city=${structure(cityInput.value)}`
+///api/records/1.0/search/?dataset=open-beer-database-breweries%40public&facet=city&facet=state&facet=country&refine.city=Columbus
+///api/records/1.0/search/?dataset=open-beer-database-breweries%40public&facet=city&refine.city=Columbus
 function cityFetcher(){
-return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&rows=100&refine.city=${structure(cityInput.value)}`)
+return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public&facet=city&facet=state&facet=country&rows=100&refine.city=${structure(cityInput.value)}`)
 .then(resp=> resp.json())
 .then(function(objs){ 
     let records = objs.records
