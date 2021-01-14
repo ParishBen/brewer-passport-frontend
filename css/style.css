@@ -17,7 +17,7 @@ div#city-div {
   
   #clickInstruct {
     font-weight: bolder;
-    color:burlywood;
+    color:rgb(224, 219, 213);
   }
   .semi-invisible {
     visibility: hidden;
@@ -53,4 +53,7 @@ div#city-div {
   }
   #user-form {
     position:right;
+  }
+   body {
+    background-color: burlywood;
   }
