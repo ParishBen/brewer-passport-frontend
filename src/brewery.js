@@ -138,7 +138,7 @@ function fetchWishList(){
 
 
 // function that makes DOM elements to display the returned promise from the fetch request above
-function renderWishList(theCurrentUser){
+function renderWishList(theCurrentUserList){
     // let wishListDiv = document.querySelector('div#wishListDiv')
     let wishListDiv = document.querySelector('div#wishListDiv')
     //wishListDiv.className = 'semi-invisible'
@@ -146,10 +146,23 @@ function renderWishList(theCurrentUser){
     
     let ol = document.createElement('ol')
     ol.id = 'wishlistOL'
+
+    theCurrentUserList.sort(function(a, b){
+             
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+      
+        // names must be equal
+        return 0;
+      });
     let counter = 0;
     // will go through the current user's array of wishlist breweries & creates a li for each Brewery and then sets unique id's to each Brewery Li.
     // Then adding a delete button and a send to favorites button
-    theCurrentUser.forEach(function(brewery){ 
+    theCurrentUserList.forEach(function(brewery){ 
         let li = document.createElement('li')
         li.setAttribute('id', `wishlistLI-${counter}`)
         let delBtn = document.createElement('button')
@@ -377,7 +390,9 @@ function fetchFavoriteList(){
 
 }
 
-function renderFavoriteList(theCurrentUser){
+
+
+function renderFavoriteList(theCurrentUserList){
     // let wishListDiv = document.querySelector('div#wishListDiv')
     let favoriteListDiv = document.querySelector('div#favoriteListDiv')
     //wishListDiv.className = 'semi-invisible'
@@ -385,8 +400,24 @@ function renderFavoriteList(theCurrentUser){
       
      let ol = document.createElement('ol')
      ol.id = 'favoritelistOL'
+     // Live Coding -> Sort Breweries Alphabetically By Name
+     
+     theCurrentUserList.sort(function(a, b){
+             
+             if (a.name < b.name) {
+               return -1;
+             }
+             if (a.name > b.name) {
+               return 1;
+             }
+           
+             // names must be equal
+             return 0;
+           });
+
+
      let counter = 0;
-     theCurrentUser.forEach(function(brewery){ 
+     theCurrentUserList.forEach(function(brewery){ 
          let li = document.createElement('li')
          li.setAttribute('id', `favListLI-${counter}`)
          let delBtn = document.createElement('button')
@@ -455,6 +486,10 @@ function renderFavoriteList(theCurrentUser){
     })
     .catch(err=> console.log(err))
 }
+
+
+
+
 
 
 

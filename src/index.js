@@ -70,7 +70,6 @@ const cityDiv = document.getElementById("city-div")
 
 
 
-
 cityForm.addEventListener("submit", citySubmit)
 
 function citySubmit(){
@@ -131,6 +130,7 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         counter++
     }  
 })
+.catch(err=> console.log(err))
 }
 
     
