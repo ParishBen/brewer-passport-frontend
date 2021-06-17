@@ -1,40 +1,83 @@
 let userForm = document.getElementById('user-form')
-const userURL = 'http://localhost:3000/users'
+console.log('scripting from user.js')
+const userURL = 'http://localhost:3000/users/'
 userForm.addEventListener("submit", userSubmit)
 
+function showLogout(){
+  console.log('showing logout btn!')
+  document.getElementById('logout').style.display = 'inline'
+}
 
-
-
+// function logoutFn(){
+//   localStorage.removeItem('token')
+// }
 
 function userSubmit(e){
-    e.preventDefault()
-    let usersName = document.getElementById('users-name')
-    let userName = document.getElementById('username')
+  //document.getElementById('logout').style.display = 'inline'
+  e.preventDefault()
+  console.log('What the heck starting post to user now')
+  let usersName = document.getElementById('users-name')
+  let userName = document.getElementById('username')
+  let userDiv = document.getElementById("welcome")
+  let h4 = document.createElement('h4')
+  h4.style.color = 'Brown'
+  h4.id = 'welcoming'
+  h4.innerText =  `Welcome, ${userName.value}`
+  userDiv.appendChild(h4)
+  //console.log(userName.value, usersName.value)
+  fetch(userURL, {
+    method: 'POST',
+    //mode: 'no-cors',
+    //credentials: "include",
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: "application/json"
+    },
+    body: JSON.stringify({
+      "name":  usersName.value,
+      "username":  userName.value
+    })
+  })
+  .then(resp=> resp.json())
+  .then(json=> {
+    console.log(json.token)
+    window.localStorage.setItem('name', json["token"]["user"]['name'])
+    window.localStorage.setItem('username', json["token"]["user"]['username'])
+    window.localStorage.setItem('token', json["token"]['jwt'])})
+   .then(()=> showLogout())
+    .catch(err=> console.log(err))
+    userForm.remove()
+}
+
+ 
+function fetchUser(){
+  console.log('fetching user')
+  const token = localStorage.getItem('token')
+  if (token != null){
+  console.log(token)
+  fetch('http://localhost:3000/get_current_user', {
+    headers: {
+      'Authorization': token,
+    }
+})
+.then(res => res.json())
+.then(resp=> { 
+  if(resp.error){
+    console.log(resp.error)
+  } else {
+    userForm.remove()
+    showLogout()
     let userDiv = document.getElementById("welcome")
     let h4 = document.createElement('h4')
      h4.style.color = 'Brown'
      h4.id = 'welcoming'
-    h4.innerText =  `Welcome, ${userName.value}`
+    h4.innerText =  `Welcome, ${resp.user.username}`
      userDiv.appendChild(h4)
-    
-    fetch(userURL, {
-        method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: "application/json"
-            },
-            body: JSON.stringify({
-              "name": usersName.value,
-              "username": userName.value
-             })
-            })
-           
-    
-    userForm.remove()
+console.log(resp.user.username)}})
+.catch(err=>console.log)}
 }
 
-
-
+fetchUser()
 
 //function postToy(toy_data) {
     //     fetch('http://localhost:3000/toys', {

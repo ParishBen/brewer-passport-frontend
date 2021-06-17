@@ -1,10 +1,9 @@
 const BASE_URL = "http://localhost:3000"
 
-console.log("this is script to file")
+console.log("this is script to file-index.js")
 const cityForm = document.getElementById("city-form")
 const cityInput = document.getElementById("city-search-input")
 const cityDiv = document.getElementById("city-div")
-
 
 
 // example grabbing already from DB data...
@@ -15,12 +14,10 @@ const cityDiv = document.getElementById("city-div")
 //         let trainers = json['data']
 //         console.log(json)
 //         trainers.forEach(trainer => {
-//         createTrainerCard(trainer.attributes)
-        
+//         createTrainerCard(trainer.attributes)        
 //         })
 //     })
 // }
-
 //             EXAMPLE WAYS OF FETCH req
 
 // function postToy(toy_data) {
@@ -73,6 +70,7 @@ const cityDiv = document.getElementById("city-div")
 cityForm.addEventListener("submit", citySubmit)
 
 function citySubmit(){
+    console.log('submitting city search')
     event.preventDefault()
     showMeTheInput()
     cityFetcher()
@@ -103,7 +101,7 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
 .then(function(objs){ 
     let records = objs.records
     console.log(objs)
-    console.log(records)
+    console.log(records, records[0].fields.name_breweries)
     let counter = 0
     while (counter < records.length){
         // for each brewery found in database it will create a 'p' with that brewery's name. Then next to the name will be wishlist & favorite list buttons
@@ -128,10 +126,10 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         favoritedBrewery.addEventListener("click", addToFavorites)
         cityDiv.append(p)
         counter++
-    }  
-})
-.catch(err=> console.log(err))
-}
+      }  
+    })
+    .catch(err=> console.log(err))
+   }
 
     
 
@@ -221,3 +219,13 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
 //  }
 
 
+
+
+function noLogOut(){
+    if(!window.localStorage.getItem('token')){
+        document.getElementById('logout').style.display = 'none'
+    } else {
+        document.getElementById('logout').style.display = 'box'
+    }
+}
+noLogOut()
