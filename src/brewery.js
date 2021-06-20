@@ -61,6 +61,7 @@ function addToWishList(e) {
        console.log(ret)
        console.log(clickedBrewery)
     return fetch(wishlistURL, {
+        credentials: "include",
         method: 'POST',
         //credentials: "include",
         headers: {
@@ -112,6 +113,7 @@ brewName = brewName.replace('#', '%23')
 
 // fetching the brewery to delete from this user's wishlist
 return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {
+    credentials: "include",
     method: 'DELETE',
     //credentials: "include",
     headers: {
@@ -139,12 +141,20 @@ logOutButton.addEventListener("click", logoutFn)
 
 function logoutFn(){
     if(window.localStorage.getItem('token')){
-        window.localStorage.removeItem('username')
-        window.localStorage.removeItem('name')
+        window.localStorage.setItem('session', false)
         window.localStorage.removeItem('token')
-        location.reload()
+        fetch('http://localhost:3000/logout')
+        .then(resp=> resp.json())
+        .then(ressy=> console.log(ressy.text))
+        .then(()=> location.reload())
+        .catch(err=>console.log(err)) 
     } else {
-        location.reload()
+        fetch('http://localhost:3000/logout')
+        .then(resp=> resp.json())
+        .then(ressy=> console.log(ressy.text))
+        .then(()=> location.reload())
+        .then(()=>console.log('loggedout'))
+        .catch(err=>console.log(err))   
     }
 }
 
@@ -296,7 +306,7 @@ function addFaveFromWishList(e){
     
     return fetch(favoritelistURL, {
         method: 'POST',
-        //credentials: "include",
+        credentials: "include",
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'
@@ -367,7 +377,7 @@ function addToFavorites(e) {
    
     return fetch(favoritelistURL, {
         method: 'POST',
-        //credentials: "include",
+        credentials: "include",
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'
@@ -495,7 +505,7 @@ function renderFavoriteList(theCurrentUserList){
     //console.log(runame, brewName)
     return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), {
         method: 'DELETE',
-        //credentials: "include",
+        credentials: "include",
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'
