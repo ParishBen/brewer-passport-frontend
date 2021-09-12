@@ -27,8 +27,6 @@ function userSubmit(e){
   //console.log(userName.value, usersName.value)
   fetch(userURL, {
     method: 'POST',
-    //mode: 'no-cors',
-    credentials: "include",
     headers: {
       'Content-Type': 'application/json',
       Accept: "application/json"
@@ -46,7 +44,7 @@ function userSubmit(e){
     window.localStorage.setItem('token', json["token"]['jwt'])
     window.localStorage.setItem('session', true)
   })
-   .then(()=> showLogout())
+   .then(()=> {showLogout()})
     .catch(err=> console.log(err))
     userForm.remove()
 }
@@ -58,7 +56,6 @@ function fetchUser(){
   if (token != null){
   console.log(token)
   fetch('http://localhost:3000/get_current_user', {
-    credentials: "include",
     headers: {
       'Authorization': token,
     }
@@ -134,7 +131,6 @@ function fetchUser(){
 //   if (token != null){
 //   console.log(token)
 //   fetch('http://localhost:3000/get_current_user', {
-//     credentials: "include",
 //     headers: {
 //       'Authorization': token,
 //     }

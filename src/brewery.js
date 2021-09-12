@@ -61,14 +61,11 @@ function addToWishList(e) {
        console.log(ret)
        console.log(clickedBrewery)
     return fetch(wishlistURL, {
-        credentials: "include",
         method: 'POST',
-        //credentials: "include",
         headers: {
             'Content-Type':'application/json',
-            Accept:'application/json'
-            
-           },
+            Accept:'application/json' 
+        },
         body: JSON.stringify({
             "name": clickedBrewery.name,
             "city": clickedBrewery.city,
@@ -79,8 +76,7 @@ function addToWishList(e) {
             "country": clickedBrewery.country,
             "state": clickedBrewery.state,
             "user_id": '',
-            "username": grabUserName()
-            
+            "username": grabUserName()  
            })
         })
         .then(function(){
@@ -113,9 +109,7 @@ brewName = brewName.replace('#', '%23')
 
 // fetching the brewery to delete from this user's wishlist
 return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {
-    credentials: "include",
     method: 'DELETE',
-    //credentials: "include",
     headers: {
         'Content-Type':'application/json',
         Accept:'application/json'
@@ -165,7 +159,8 @@ wishbutton.addEventListener("click", fetchWishList)
 //fetch request to backend to grab the user's wishlist
 function fetchWishList(){
     
-    return fetch(wishlistURL+grabUserName())
+    return fetch(wishlistURL+grabUserName(), {
+    })
     .then(resp=> resp.json())
     .then(json=> renderWishList(json))
 
@@ -306,7 +301,6 @@ function addFaveFromWishList(e){
     
     return fetch(favoritelistURL, {
         method: 'POST',
-        credentials: "include",
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'
@@ -377,7 +371,6 @@ function addToFavorites(e) {
    
     return fetch(favoritelistURL, {
         method: 'POST',
-        credentials: "include",
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'
@@ -505,7 +498,6 @@ function renderFavoriteList(theCurrentUserList){
     //console.log(runame, brewName)
     return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), {
         method: 'DELETE',
-        credentials: "include",
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'
