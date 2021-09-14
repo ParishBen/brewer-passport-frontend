@@ -9,7 +9,6 @@ div#city-div {
   }
 
   #greet {
-
     text-decoration: underline;
     color: darkslategray;
     font-weight: bolder;
@@ -19,13 +18,16 @@ div#city-div {
     font-weight: bolder;
     color:rgb(224, 219, 213);
   }
+
   .semi-invisible {
     visibility: hidden;
   }
+
   .brewery-class-info {
     display: block;
     
   }
+
   .wishList-show {
     width:fit-content;
     height:auto;
@@ -33,6 +35,7 @@ div#city-div {
     box-shadow: 5px 5px seagreen;
     border-color: grey;
   }
+
   .favoriteList-show {
     width:fit-content;
     height: auto;
@@ -46,14 +49,20 @@ div#city-div {
     color:seagreen;
     text-align:center;
   }
+
   h3#favoriteListHeader{
     text-decoration:underline;
     color:goldenrod;
     text-align:center;
   }
+
   #user-form {
     position:right;
   }
+
    body {
     background-color: burlywood;
+  }
+  h4#welcoming {
+    color:brown;
   }

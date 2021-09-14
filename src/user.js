@@ -1,30 +1,31 @@
+
 let userForm = document.getElementById('user-form')
-console.log('scripting from user.js')
 const userURL = 'http://localhost:3000/users/'
 userForm.addEventListener("submit", userSubmit)
 
 function showLogout(){
-  console.log('showing logout btn!')
   document.getElementById('logout').style.display = 'inline'
 }
 
 // function logoutFn(){
 //   localStorage.removeItem('token')
 // }
-
-function userSubmit(e){
-  //document.getElementById('logout').style.display = 'inline'
-  e.preventDefault()
-  console.log('What the heck starting post to user now')
+function greetUser(){
   let usersName = document.getElementById('users-name')
   let userName = document.getElementById('username')
   let userDiv = document.getElementById("welcome")
+  if(!document.getElementById('welcoming')){
   let h4 = document.createElement('h4')
-  h4.style.color = 'Brown'
-  h4.id = 'welcoming'
-  h4.innerText =  `Welcome, ${userName.value}`
-  userDiv.appendChild(h4)
-  //console.log(userName.value, usersName.value)
+    h4.id = 'welcoming'
+    h4.innerText =  `Welcome, ${userName.value}`
+    userDiv.appendChild(h4)
+  }
+  return [usersName, userName]
+}
+
+function userSubmit(e){
+  e.preventDefault()
+  greetUser()
   fetch(userURL, {
     method: 'POST',
     headers: {
@@ -32,8 +33,8 @@ function userSubmit(e){
       Accept: "application/json"
     },
     body: JSON.stringify({
-      "name":  usersName.value,
-      "username":  userName.value
+      "name":  greetUser()[0].value,
+      "username":  greetUser()[1].value
     })
   })
   .then(resp=> resp.json())

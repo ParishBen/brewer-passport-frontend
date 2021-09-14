@@ -4,7 +4,7 @@ class Brewery{
         this.city = city
         this.state = state
         this.address = address1
-        this.name = name_breweries
+        this.name = name_breweries // name_breweries is name of brewery coming from API
         this.country = country
         this.phoneNum = phone
         this.description = descript
@@ -12,54 +12,46 @@ class Brewery{
 
     }
 }
-console.log('scripting from brewery.js')
 
-let breweries = [];
-// Setting up Nav Bar with wishlist & favorite list buttons
-let nav = document.querySelector('nav')
-let wishbutton = document.createElement('button')
-wishbutton.innerText = "Your Wish List"
-wishbutton.id = "wishbutton"
-wishbutton.className = "wishlist-button-class"
-let favoritebutton = document.createElement("button")
-favoritebutton.innerText = "Favorited List"
-favoritebutton.id = "favoritebutton"
-favoritebutton.className = "favorite-button-class"
- let logOutButton = document.getElementById('logout')
-// logOutButton.id = 'logoutbutton'
-// logOutButton.innerText = "Log Out"
+let breweries = [];  // Breweries starts as empty array
 
-nav.append(wishbutton, favoritebutton) //logOutButton)
+// ******Setting up Nav Bar with wishlist & favorite list buttons********
+let nav = document.querySelector('nav');   // NAVBAR
+let wishbutton = document.createElement('button'); // Create the Navbar button to render Wishlist
+let favoritebutton = document.createElement("button"); // Create the Navbar button to render Favorites
+let logOutButton = document.getElementById('logout'); // LogoutButton that's established on index.html in Navbar
+wishbutton.innerText = "Your Wish List";
+wishbutton.id = "wishbutton";
+wishbutton.className = "wishlist-button-class";
+favoritebutton.innerText = "Favorited List";
+favoritebutton.id = "favoritebutton";
+favoritebutton.className = "favorite-button-class";
+
+nav.append(wishbutton, favoritebutton) /******NAVBAR now holds wishlist & favorite buttons  */
+
+
+/**** ESTABLISHING Server Route URLs to conduct CRUD actions ****/
 let wishlistURL = 'http://localhost:3000/wishlists/'
 let favoritelistURL = 'http://localhost:3000/favoritelists/'
  
 // function used in many Fetch requests to grab the username
 function grabUserName(){
-    let usersName = document.getElementById('welcoming')
-    let username= usersName.innerText.toString()
-    let runame = username.split(' ').slice(1).join('')
-    return runame
+    let usersData = document.getElementById('welcoming') // Form that holds the data input from User
+    let userNames = usersData.innerText.toString()   // Username & Family name of User
+    let theUsername = userNames.split(' ').slice(1).join('')  // The Username sliced from two name array
+    return theUsername
 }
 
-// function buttonShowHide(){
-//     window.localStorage.getItem('token') != null ?
-//         logOutButton.style.display = 'box' :
-//         logOutButton.style.display = 'none'
-// }
+
 
 // Adding a fetched Brewery to the User's Wishlist
 function addToWishList(e) {
-     //grabUserName()
-    let breweryP = e.target.parentElement
-    // let usersName = document.getElementById('welcoming')
-    // let username= usersName.innerText.toString()
-    // let runame = username.split(' ').slice(1).join('')
-    //console.log(runame.value)
-   console.log(breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist')))
-    let ret = breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist'))
-    let clickedBrewery = breweries.find(brew => brew.name == ret)
-       console.log(ret)
-       console.log(clickedBrewery)
+    let breweryP = e.target.parentElement // The clicked button's Parent element (Brewery Name) 
+
+  //**To Grab Name of Clicked Brewery: ** breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist'))
+      let breweryName = breweryP.innerText.toString().substring(0,breweryP.innerText.indexOf('Add to Wishlist'))
+      let clickedBrewery = breweries.find(brew => brew.name == breweryName)  //finds the correctly clicked brewery
+      
     return fetch(wishlistURL, {
         method: 'POST',
         headers: {
@@ -79,27 +71,36 @@ function addToWishList(e) {
             "username": grabUserName()  
            })
         })
+        .then(resp => resp.json())
+        .then(parsedresp=> {
+            if(parsedresp.error)
+            alert(parsedresp.error)
+        })
         .then(function(){
             breweryP.style.color = "green"})
         .then(function(){
-                        let divList = document.querySelector('div.wishList-show')
-                        if(divList && divList.children.length >= 1){
-                            // function to show the wishlist if it's displayed to the DOM or not already
-                            fetchWishList()
-                            fetchWishList()
-                        } else {
-                            fetchWishList()
-                        }
-                    })
-                    .catch(err=> console.log(err))
-                }
-                
-    // function to change the title & brewery info to green upon adding to wishlist
-// function that deletes a Brewery from the user's wishlist
+          let divList = document.querySelector('div.wishList-show')
+            if(divList && divList.children.length >= 1){
+              // function to rerender the new wishlist if it's displayed to the DOM
+                 fetchWishList()
+                 fetchWishList()
+         } else { // Render the Wishlist to the DOM since it wasn't currently rendered
+              fetchWishList()
+             }
+           })
+        .catch(err=> console.log(err))
+    }
+
+
+// function to change the title & brewery info to green upon adding to wishlist
+
+
+
+
+// Deletes a Brewery from the User's wishlist
 function deleteBrewWish(e){
-let breweryP = e.target.parentElement
-console.log(breweryP)
-let cutBrewery = breweryP.innerText.toString().split(' ').slice(1).join(' ')
+let breweryP = e.target.parentElement //Clicked button's Parent Element (Brewery's info)
+let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name not the # in the list
 console.log(cutBrewery)
 
 let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
@@ -203,7 +204,7 @@ function renderWishList(theCurrentUserList){
         switchBtn.addEventListener('click', switchToFaves)
         // added event listeners to the buttons to perform functionality upon click
         // adding innerHTML for each Brewery Li. 
-        li.innerHTML += `Brewery: ${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+        li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
         li.append(' ', delBtn, ' ', switchBtn)
         ol.append(li)
         ol.className = 'semi-invisible'
@@ -268,36 +269,36 @@ function switchToFaves(e){
 
 // Since I chose to delete the Brewery from Wishlist first I had to manually parse through the paragraph of Brewery info & assign values from segments of the paragraph
 function addFaveFromWishList(e){
-    let breweryP = e.target.parentElement
-    // let usersName = document.getElementById('welcoming')
-    // let username= usersName.innerText.toString()
-    // let runame = username.split(' ').slice(1).join('')
+    let breweryP = e.target.parentElement  //The Brewery Name left of button clicked
+  
 
-    let clickedBrewery = {};
-    let ret = breweryP.innerText.toString().split(' ').slice(1).join(' ')
-    clickedBrewery.name = ret.substring(0, ret.indexOf(' - Address'))
-    let addressque = ret.substring(0, ret.indexOf(' - City:')) 
-    let addsliceNum= addressque.indexOf('s:')
-    clickedBrewery.address = addressque.slice(addsliceNum+3)
-    let cityque = ret.substring(0, ret.indexOf(' - Phone Num:'))
-    let citysliceNum = cityque.indexOf('y:')
-    clickedBrewery.city = cityque.slice(citysliceNum+3)
-    let phoneque = ret.substring(0, ret.indexOf(' - Website:'))
-    let phonesliceNum = phoneque.indexOf('m:')
-    clickedBrewery.phoneNum = phoneque.slice(phonesliceNum+3)
-    let webque = ret.substring(0, ret.indexOf(' - State:'))
-    let websliceNum = webque.indexOf('e:')
-    clickedBrewery.website = webque.slice(websliceNum+3)
-    let stateque = ret.substring(0, ret.indexOf(' - Description'))
-    let statesliceNum = stateque.indexOf('ate:')
-    clickedBrewery.state = stateque.slice(statesliceNum+5)
-    let descque = ret.substring(0, ret.indexOf(' - Country:'))
-    let dessliceNum = descque.indexOf('n:')
-    clickedBrewery.description = descque.slice(dessliceNum+3)
-    let countryque = ret.substring(0, ret.indexOf(' Delete'))
-    let countsliceNum = countryque.indexOf('ry:')
-    clickedBrewery.country = countryque.slice(countsliceNum+4)
-    console.log( clickedBrewery)
+   // let clickedBrewery = {};
+    let realBrewery = breweryP.innerText.toString()
+    clickedBreweryName = realBrewery.substring(0, realBrewery.indexOf(' - Address'))
+    let clickedBrewery = breweries.find(brew => brew.name == breweryName)  //finds the correctly clicked brewery
+    fetch()
+    // let addressque = ret.substring(0, ret.indexOf(' - City:')) 
+    // let addsliceNum= addressque.indexOf('s:')
+    // clickedBrewery.address = addressque.slice(addsliceNum+3)
+    // let cityque = ret.substring(0, ret.indexOf(' - Phone Num:'))
+    // let citysliceNum = cityque.indexOf('y:')
+    // clickedBrewery.city = cityque.slice(citysliceNum+3)
+    // let phoneque = ret.substring(0, ret.indexOf(' - Website:'))
+    // let phonesliceNum = phoneque.indexOf('m:')
+    // clickedBrewery.phoneNum = phoneque.slice(phonesliceNum+3)
+    // let webque = ret.substring(0, ret.indexOf(' - State:'))
+    // let websliceNum = webque.indexOf('e:')
+    // clickedBrewery.website = webque.slice(websliceNum+3)
+    // let stateque = ret.substring(0, ret.indexOf(' - Description'))
+    // let statesliceNum = stateque.indexOf('ate:')
+    // clickedBrewery.state = stateque.slice(statesliceNum+5)
+    // let descque = ret.substring(0, ret.indexOf(' - Country:'))
+    // let dessliceNum = descque.indexOf('n:')
+    // clickedBrewery.description = descque.slice(dessliceNum+3)
+    // let countryque = ret.substring(0, ret.indexOf(' Delete'))
+    // let countsliceNum = countryque.indexOf('ry:')
+    // clickedBrewery.country = countryque.slice(countsliceNum+4)
+    // console.log( clickedBrewery)
     
     return fetch(favoritelistURL, {
         method: 'POST',
@@ -320,6 +321,11 @@ function addFaveFromWishList(e){
             
            })
         })
+           .then(resp => resp.json())
+           .then(jsonResp => {
+               if(jsonResp.error)
+               alert(jsonResp.error)
+           })
            .then(function(){
                // going through the Breweries searched & will change the color to goldenrod if it matches the name
             let ps = document.querySelectorAll('p.brewery-info-class')
@@ -390,6 +396,11 @@ function addToFavorites(e) {
             
            })
         })
+           .then(res => res.json())
+           .then(jsonResp => {
+               if (jsonResp.error)
+               alert(jsonResp.error)
+           })
            .then(function(){
               
                breweryP.style.color = 'goldenrod'
@@ -453,7 +464,7 @@ function renderFavoriteList(theCurrentUserList){
          let delBtn = document.createElement('button')
          delBtn.innerHTML = "Delete"
          delBtn.addEventListener('click', deleteBrewFave)
-         li.innerHTML += `Brewery: ${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+         li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
          li.append(' ', delBtn)
          ol.append(li)
          ol.className = 'semi-invisible'
@@ -483,20 +494,13 @@ function renderFavoriteList(theCurrentUserList){
 
  function deleteBrewFave(e){
     let breweryParent = e.target.parentElement
-    console.log(breweryParent)
     let cutBrewery = breweryParent.innerText.toString().split(' ').slice(1).join(' ')
-    console.log(cutBrewery)
-
     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
    
-    if(brewName.match(/[#]/))
-    console.log(brewName.match(/[#]/))
-    brewName = brewName.replace('#', '%23')
-    // let usersName = document.getElementById('welcoming')
-    // let username= usersName.innerText.toString()
-    // let runame = username.split(' ').slice(1).join('')
-    //console.log(runame, brewName)
-    return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), {
+        if(brewName.match(/[#]/))
+           brewName = brewName.replace('#', '%23')
+    
+    return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), { //
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',
