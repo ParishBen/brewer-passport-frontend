@@ -100,7 +100,7 @@ function addToWishList(e) {
 // Deletes a Brewery from the User's wishlist
 function deleteBrewWish(e){
 let breweryP = e.target.parentElement //Clicked button's Parent Element (Brewery's info)
-let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name not the # in the list
+let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name + other text in Element
 console.log(cutBrewery)
 
 let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
@@ -235,145 +235,35 @@ console.log(ol.className, wishListDiv.className)
 
 // refactored to conduct a delete of the Brewery in wishlist first and then send to favorites
 function switchToFaves(e){
+    addFaveFromWishList(e)
     deleteBrewWish(e)
-// console.log(e.target, e.target.parentElement)
-// let clickedBrewery= {};
-// let switchingBrewery = e.target.parentElement.innerText.toString().split(' ').slice(1).join(' ')
-// //console.log(switchingBrewery)
-// let brewName = switchingBrewery.substring(0, switchingBrewery.indexOf(' - Address'))
-// let usersName = document.getElementById('welcoming')
-//     let username= usersName.innerText.toString()
-//     let runame = username.split(' ').slice(1).join('')
-//     //console.log(runame, brewName)
-//     return fetch(wishlistURL+runame+'/'+brewName, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type':'application/json',
-//             Accept:'application/json'
-            
-//            },
-//     })
-//     .then(fetchWishList())
-//     .then(fetchWishList())
-//     .then(function(){
-//         let ps = document.querySelectorAll('p.brewery-info-class')
-//         for (p of ps){
-//             let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
-//             brewName == titlep ? p.style.color = "black" : ''
-//             console.log(brewName,titlep)
-//         }
-//     })
-   addFaveFromWishList(e)
-    // .catch(err=> console.log(err))
 }
 
 // Since I chose to delete the Brewery from Wishlist first I had to manually parse through the paragraph of Brewery info & assign values from segments of the paragraph
 function addFaveFromWishList(e){
     let breweryP = e.target.parentElement  //The Brewery Name left of button clicked
-  
-
-   // let clickedBrewery = {};
     let realBrewery = breweryP.innerText.toString()
     clickedBreweryName = realBrewery.substring(0, realBrewery.indexOf(' - Address'))
-    let clickedBrewery = breweries.find(brew => brew.name == breweryName)  //finds the correctly clicked brewery
-    fetch()
-    // let addressque = ret.substring(0, ret.indexOf(' - City:')) 
-    // let addsliceNum= addressque.indexOf('s:')
-    // clickedBrewery.address = addressque.slice(addsliceNum+3)
-    // let cityque = ret.substring(0, ret.indexOf(' - Phone Num:'))
-    // let citysliceNum = cityque.indexOf('y:')
-    // clickedBrewery.city = cityque.slice(citysliceNum+3)
-    // let phoneque = ret.substring(0, ret.indexOf(' - Website:'))
-    // let phonesliceNum = phoneque.indexOf('m:')
-    // clickedBrewery.phoneNum = phoneque.slice(phonesliceNum+3)
-    // let webque = ret.substring(0, ret.indexOf(' - State:'))
-    // let websliceNum = webque.indexOf('e:')
-    // clickedBrewery.website = webque.slice(websliceNum+3)
-    // let stateque = ret.substring(0, ret.indexOf(' - Description'))
-    // let statesliceNum = stateque.indexOf('ate:')
-    // clickedBrewery.state = stateque.slice(statesliceNum+5)
-    // let descque = ret.substring(0, ret.indexOf(' - Country:'))
-    // let dessliceNum = descque.indexOf('n:')
-    // clickedBrewery.description = descque.slice(dessliceNum+3)
-    // let countryque = ret.substring(0, ret.indexOf(' Delete'))
-    // let countsliceNum = countryque.indexOf('ry:')
-    // clickedBrewery.country = countryque.slice(countsliceNum+4)
-    // console.log( clickedBrewery)
-    
-    return fetch(favoritelistURL, {
-        method: 'POST',
+
+      fetch(`http://localhost:3000/wishlists/${grabUserName()}/${clickedBreweryName}`, {
         headers: {
-            'Content-Type':'application/json',
-            Accept:'application/json'
-            
-           },
-        body: JSON.stringify({
-            "name": clickedBrewery.name,
-            "city": clickedBrewery.city,
-            "address": clickedBrewery.address,
-            "phoneNum": clickedBrewery.phoneNum,
-            "website": clickedBrewery.website,
-            "description": clickedBrewery.description,
-            "country": clickedBrewery.country,
-            "state": clickedBrewery.state,
-            "user_id": '',
-            "username": grabUserName()
-            
-           })
-        })
-           .then(resp => resp.json())
-           .then(jsonResp => {
-               if(jsonResp.error)
-               alert(jsonResp.error)
-           })
-           .then(function(){
-               // going through the Breweries searched & will change the color to goldenrod if it matches the name
-            let ps = document.querySelectorAll('p.brewery-info-class')
-            for (p of ps){
-                let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
-                clickedBrewery.name == titlep ? p.style.color = "goldenrod" : ''
-                console.log(clickedBrewery.name, titlep)
-            }
-           })
-       .then(function(){
-           let divList = document.querySelector('div.favoriteList-show')
-           if(divList && divList.children.length >= 2){
-               fetchFavoriteList()
-               fetchFavoriteList() // if it's being displayed will rerender the favoritelist
-           } else {
-               fetchFavoriteList() // else displaying the favorite list now
-           }
-       })
-       .catch(err=> console.log(err))
-    }
+            'Authorization': grabUserName()
+        }
+    })
+    .then(resp => resp.json())
+    .then(jsonResp => {
+        postToFavorites(jsonResp.brewery)
+     })
+    .catch(err=> console.log(err))
+}
 
 
 
 function addToFavorites(e) {
      
-    let breweryP = e.target.parentElement
-    // let usersName = document.getElementById('welcoming')
-    // let username= usersName.innerText.toString()
-    // let runame = username.split(' ').slice(1).join('')
-    
-   // console.log(runame.value)
-   console.log(breweryP)
-   console.log(breweryP.innerText.includes('Add to Wishlist'))
-    
-   
-     let ret = breweryP.innerText.toString().substring(0,breweryP.innerText.toString().indexOf('Add to Wishlist'))
-     let clickedBrewery = breweries.find(brew => brew.name == ret) 
-       console.log(ret)
-       console.log(clickedBrewery)
-  
-       //console.log(clickedBrewery.)
-       //clickedBrewery.city = ret.substring('')
-    //    let brewery = new Brewery(records[counter].fields.city, records[counter].fields.state, records[counter].fields.address1, records[counter].fields.country, records[counter].fields.phone, records[counter].fields.name_breweries, records[counter].fields.descript, records[counter].fields.website)
-    // breweries.push(brewery)
-    //     console.log(brewery)
-    //    let clickedBrewery = breweries.find(brew => brew.name == retname) 
-    //    console.log(ret, retname, clickedBrewery)
-    
+     let breweryP = e.target.parentElement
+     let breweryName = breweryP.innerText.toString().substring(0,breweryP.innerText.toString().indexOf('Add to Wishlist'))
+     let clickedBrewery = breweries.find(brew => brew.name == breweryName)     
    
     return fetch(favoritelistURL, {
         method: 'POST',
@@ -393,7 +283,6 @@ function addToFavorites(e) {
             "state": clickedBrewery.state,
             "user_id": '',
             "username": grabUserName()
-            
            })
         })
            .then(res => res.json())
@@ -401,12 +290,9 @@ function addToFavorites(e) {
                if (jsonResp.error)
                alert(jsonResp.error)
            })
-           .then(function(){
-              
-               breweryP.style.color = 'goldenrod'
-            
-            
-        })
+           .then(function(){ 
+               breweryP.style.color = 'goldenrod'   
+         })
        .then(function(){
            let divList = document.querySelector('div.favoriteList-show')
            if(divList && divList.children.length >= 2){
@@ -419,25 +305,60 @@ function addToFavorites(e) {
        .catch(err=> console.log(err))
     }
 
+
+    function postToFavorites(brewery) {        
+       
+        return fetch(favoritelistURL, {
+            method: 'POST',
+
+            headers: {
+                'Content-Type':'application/json',
+                Accept:'application/json'     
+               },
+
+            body: JSON.stringify({
+                "name": brewery.name,
+                "city": brewery.city,
+                "address": brewery.address,
+                "phoneNum": brewery.phoneNum,
+                "website": brewery.website,
+                "description": brewery.description,
+                "country": brewery.country,
+                "state": brewery.state,
+                "user_id": brewery.user_id,
+                "username": grabUserName()
+               })
+            })
+               .then(res => res.json())
+               .then(jsonResp => {
+                   if (jsonResp.error)
+                   alert(jsonResp.error)
+               })
+           .then(function(){
+               let divList = document.querySelector('div.favoriteList-show')
+               if(divList && divList.children.length >= 2){
+                   fetchFavoriteList()
+                   fetchFavoriteList()
+               } else {
+                   fetchFavoriteList()
+               }
+           })
+           .catch(err=> console.log(err))
+        }
+
 favoritebutton.addEventListener("click", fetchFavoriteList)
 
 function fetchFavoriteList(){
-    // let usersName = document.getElementById('welcoming')
-    // let username= usersName.innerText.toString()
-    // let runame = username.split(' ').slice(1).join('')
+
     return fetch(favoritelistURL+grabUserName())
     .then(resp=> resp.json())
     .then(json=> renderFavoriteList(json))
-
 }
 
 
 
 function renderFavoriteList(theCurrentUserList){
-    // let wishListDiv = document.querySelector('div#wishListDiv')
     let favoriteListDiv = document.querySelector('div#favoriteListDiv')
-    //wishListDiv.className = 'semi-invisible'
-    console.log(favoriteListDiv)
       
      let ol = document.createElement('ol')
      ol.id = 'favoritelistOL'
@@ -479,10 +400,12 @@ function renderFavoriteList(theCurrentUserList){
          
      }
          
-     if ( favoriteListDiv.children.length <=2 && ol.className == 'semi-invisible'){ favoriteListDiv.className = 'favoriteList-show';
-     ol.className = 'ordered-list-show';
- } if(favoriteListDiv.children.length > 2 ) { 
-     ol.className = 'ordered-list-show';
+     if ( favoriteListDiv.children.length <=2 && ol.className == 'semi-invisible'){ 
+         favoriteListDiv.className = 'favoriteList-show';
+         ol.className = 'ordered-list-show';
+   } 
+     if(favoriteListDiv.children.length > 2 ) { 
+      ol.className = 'ordered-list-show';
       favoriteListDiv.className = 'favoriteList-show';
      while (favoriteListDiv.firstChild){
          favoriteListDiv.removeChild(favoriteListDiv.firstChild)
@@ -494,7 +417,7 @@ function renderFavoriteList(theCurrentUserList){
 
  function deleteBrewFave(e){
     let breweryParent = e.target.parentElement
-    let cutBrewery = breweryParent.innerText.toString().split(' ').slice(1).join(' ')
+    let cutBrewery = breweryParent.innerText.toString()
     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
    
         if(brewName.match(/[#]/))
@@ -520,11 +443,6 @@ function renderFavoriteList(theCurrentUserList){
     })
     .catch(err=> console.log(err))
 }
-
-
-
-// document.onloadeddata = buttonShowHide
-
 
 
 
