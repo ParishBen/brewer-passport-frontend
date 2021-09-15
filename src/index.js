@@ -1,15 +1,12 @@
 const BASE_URL = "http://localhost:3000"
 
-console.log("this is script to file-index.js")
 const cityForm = document.getElementById("city-form")
 const cityInput = document.getElementById("city-search-input")
 const cityDiv = document.getElementById("city-div")
 
-
 cityForm.addEventListener("submit", citySubmit)
 
 function citySubmit(){
-    console.log('submitting city search')
     event.preventDefault()
     showMeTheInput()
     cityFetcher()
@@ -19,7 +16,6 @@ function citySubmit(){
 }
  
 function showMeTheInput(){
-    console.log( cityInput.value)
     let div = document.getElementById("city-div")
     let ul = document.createElement("ul")
     let li = document.createElement("li")
@@ -27,8 +23,6 @@ function showMeTheInput(){
     ul.appendChild(li)
     li.innerText = structure(city)
     div.append(ul)
-    console.log(ul, li)
-    
 }
 
 // Fetching the City that is submitted 
@@ -37,8 +31,6 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
 .then(resp=> resp.json())
 .then(function(objs){ 
     let records = objs.records
-    console.log(objs)
-    console.log(records, records[0].fields.name_breweries)
     let counter = 0
     while (counter < records.length){
         // for each brewery found in database it will create a 'p' with that brewery's name. Then next to the name will be wishlist & favorite list buttons
@@ -56,7 +48,6 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         //Adding each fetched brewery into a Brewery Class in brewery.js file
     let brewery = new Brewery(records[counter].fields.city, records[counter].fields.state, records[counter].fields.address1, records[counter].fields.country, records[counter].fields.phone, records[counter].fields.name_breweries, records[counter].fields.descript, records[counter].fields.website)
     breweries.push(brewery)
-        console.log(brewery)
         //Adding click event listener on the brewery name to show more info -- the wishlist button to add to wishlist -- the favoritelist button to add to favorites
         p.addEventListener("click", myClick)
         wishList.addEventListener("click", addToWishList)
@@ -120,7 +111,6 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         function makeVisible(){
             let h4 = document.getElementById('clickInstruct');
             h4.className = 'showMoreInfo'
-            console.log(h4)
         }
 
 

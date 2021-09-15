@@ -46,7 +46,6 @@ function userSubmit(e){
 
  
 function fetchUser(){
-  console.log('fetching user')
    const token = localStorage.getItem('token')
   if (token != null){
   fetch('http://localhost:3000/get_current_user', {
@@ -67,7 +66,7 @@ function fetchUser(){
       h4.id = 'welcoming'
       h4.innerText =  `Welcome, ${resp.user.username}`
       userDiv.appendChild(h4)
-  console.log(resp.user.username)}})
+  }})
   .catch(err=>console.log)    
 } else {
       if(localStorage.getItem('session') === 'true'){
@@ -85,7 +84,6 @@ function fetchUser(){
            h4.id = 'welcoming';
           h4.innerText =  `Welcome, ${user.user.username}`;
            userDiv.appendChild(h4);
-      console.log(user.user.username);
       }
     }) 
    }  

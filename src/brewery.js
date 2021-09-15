@@ -42,8 +42,6 @@ function grabUserName(){
     return theUsername
 }
 
-
-
 // Adding a fetched Brewery to the User's Wishlist
 function addToWishList(e) {
     let breweryP = e.target.parentElement // The clicked button's Parent element (Brewery Name) 
@@ -91,21 +89,13 @@ function addToWishList(e) {
         .catch(err=> console.log(err))
     }
 
-
-// function to change the title & brewery info to green upon adding to wishlist
-
-
-
-
 // Deletes a Brewery from the User's wishlist
 function deleteBrewWish(e){
 let breweryP = e.target.parentElement //Clicked button's Parent Element (Brewery's info)
 let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name + other text in Element
-console.log(cutBrewery)
 
 let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
 if(brewName.match(/[#]/))
-console.log(brewName.match(/[#]/))
 brewName = brewName.replace('#', '%23')
 
 // fetching the brewery to delete from this user's wishlist
@@ -125,12 +115,10 @@ return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {
     for (p of ps){
         let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
         brewName == titlep ? p.style.color = "black" : ''
-        console.log(brewName,titlep)
     }
 })
 .catch(err=> console.log(err))
 }
-
 
 logOutButton.addEventListener("click", logoutFn)
 
@@ -148,7 +136,6 @@ function logoutFn(){
         .then(resp=> resp.json())
         .then(ressy=> console.log(ressy.text))
         .then(()=> location.reload())
-        .then(()=>console.log('loggedout'))
         .catch(err=>console.log(err))   
     }
 }
@@ -173,7 +160,6 @@ function renderWishList(theCurrentUserList){
     // let wishListDiv = document.querySelector('div#wishListDiv')
     let wishListDiv = document.querySelector('div#wishListDiv')
     //wishListDiv.className = 'semi-invisible'
-    console.log(wishListDiv)
     
     let ol = document.createElement('ol')
     ol.id = 'wishlistOL'
@@ -218,19 +204,16 @@ function renderWishList(theCurrentUserList){
         wishListDiv.append(banner, ol)
         
     }
-    console.log(wishListDiv.children.length, wishListDiv.className, ol.children.length, ol.className)
     // At first OL has class of semi-invisble and the wishlist only has OL & banner as children. If this is the case then upon a click we're changing the class to show the entire wishlist.
     if ( wishListDiv.children.length <=2 && ol.className == 'semi-invisible'){ wishListDiv.className = 'wishList-show';
     ol.className = 'ordered-list-show';
-} if(wishListDiv.children.length > 2 ) {  // if it's displayed then the wishlist has more than 2 children (the brewery Li's) so we will go through each childElement and delete it from the WishListDiv
+  } if(wishListDiv.children.length > 2 ) {  // if it's displayed then the wishlist has more than 2 children (the brewery Li's) so we will go through each childElement and delete it from the WishListDiv
     ol.className = 'ordered-list-show';
     wishListDiv.className = 'wishList-show';
     while (wishListDiv.firstChild){
         wishListDiv.removeChild(wishListDiv.firstChild)
     }
-}
-
-console.log(ol.className, wishListDiv.className)
+  }
 }
 
 // refactored to conduct a delete of the Brewery in wishlist first and then send to favorites
@@ -256,8 +239,6 @@ function addFaveFromWishList(e){
      })
     .catch(err=> console.log(err))
 }
-
-
 
 function addToFavorites(e) {
      
@@ -372,11 +353,9 @@ function renderFavoriteList(theCurrentUserList){
              if (a.name > b.name) {
                return 1;
              }
-           
              // names must be equal
              return 0;
            });
-
 
      let counter = 0;
      theCurrentUserList.forEach(function(brewery){ 
@@ -391,7 +370,7 @@ function renderFavoriteList(theCurrentUserList){
          ol.className = 'semi-invisible'
 
      counter++
- })
+   })
      if (ol.firstChild.innerHTML != ''){
          let banner = document.createElement('h3')
          banner.id = 'favoriteListHeader'
@@ -411,8 +390,6 @@ function renderFavoriteList(theCurrentUserList){
          favoriteListDiv.removeChild(favoriteListDiv.firstChild)
      }
    }
-      
-     console.log(ol.className, favoriteListDiv.className)
  }
 
  function deleteBrewFave(e){
@@ -427,8 +404,7 @@ function renderFavoriteList(theCurrentUserList){
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',
-            Accept:'application/json'
-            
+            Accept:'application/json'  
            },
     })
     .then(()=>fetchFavoriteList())
@@ -438,15 +414,7 @@ function renderFavoriteList(theCurrentUserList){
         for (p of ps){
             let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
             brewName == titlep ? p.style.color = "black" : ''
-            console.log(brewName,titlep)
         }
     })
     .catch(err=> console.log(err))
-}
-
-
-
-
-
-
-  
+} 
