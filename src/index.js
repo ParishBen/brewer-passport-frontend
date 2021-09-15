@@ -6,67 +6,6 @@ const cityInput = document.getElementById("city-search-input")
 const cityDiv = document.getElementById("city-div")
 
 
-// example grabbing already from DB data...
-// function fetchTrainers(){ 
-//     return fetch(TRAINERS_URL)
-//     .then(resp => resp.json())
-//     .then(json => {
-//         let trainers = json['data']
-//         console.log(json)
-//         trainers.forEach(trainer => {
-//         createTrainerCard(trainer.attributes)        
-//         })
-//     })
-// }
-//             EXAMPLE WAYS OF FETCH req
-
-// function postToy(toy_data) {
-//     fetch('http://localhost:3000/toys', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Accept: "application/json"
-//         },
-//         body: JSON.stringify({
-//           "name": toy_data.name.value,
-//           "image": toy_data.image.value,
-//           "likes": 0
-  
-//         })
-//       })
-//       .then(res => res.json())
-//       .then((obj_toy) => {
-//         let new_toy = renderToys(obj_toy)
-//         divCollect.append(new_toy)
-//         
-//       })
-//   }
-  
-//   function likes(e) {
-//     e.preventDefault()
-//     let more = parseInt(e.target.previousElementSibling.innerText) + 1
-  
-//     fetch(`http://localhost:3000/toys/${e.target.id}`, {
-//         method: "PATCH",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "Accept": "application/json"
-  
-//         },
-//         body: JSON.stringify({
-//           "likes": more
-//         })
-//       })
-//       .then(res => res.json())
-//       .then((like_obj => {
-//         e.target.previousElementSibling.innerText = `${more} likes`;
-//       }))
-//   }
-
-
-
-
-
 cityForm.addEventListener("submit", citySubmit)
 
 function citySubmit(){
@@ -91,9 +30,7 @@ function showMeTheInput(){
     console.log(ul, li)
     
 }
-//https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&facet=city&rows=100&refine.city=${structure(cityInput.value)}`
-///api/records/1.0/search/?dataset=open-beer-database-breweries%40public&facet=city&facet=state&facet=country&refine.city=Columbus
-///api/records/1.0/search/?dataset=open-beer-database-breweries%40public&facet=city&refine.city=Columbus
+
 // Fetching the City that is submitted 
 function cityFetcher(){
 return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public&facet=city&facet=state&facet=country&rows=100&refine.city=${structure(cityInput.value)}`)
@@ -132,17 +69,13 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
    }
 
     
-
         // The function to show/hide more info on the fetched Brewery    
             function myClick (e){
                 let breweryP = e.target
                 let ret = breweryP.innerText.replace('Add to WishlistAdd to Favorites', '')
                 let clickedBrewery = breweries.find(brew => brew.name == ret)
-               // console.log(breweryP.children.length)
-                //console.log(breweryP.innerText)
-                //console.log(ret)
                 let newP = document.createElement('p')
-                if (breweryP.children.length == 2 ){
+                  if (breweryP.children.length == 2 ){
                     newP.innerText+=(`Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`)
                     newP.className = 'semi-invisible' // This makes the info invisible at first
                     breweryP.append(newP)} 
@@ -151,7 +84,6 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
                         breweryP.children[2].className = 'brewery-subinfo-class'}
                     // else lets change the class to be semi-invisble & remove the element from the DOM
                     else {breweryP.children[2].className = 'semi-invisible' && removePspace(breweryP) }
-            
                 }
                 
                
@@ -177,14 +109,12 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
                 cityDiv.append(clearBtn)
                 clearBtn.addEventListener('click', clearCityDiv)
             }
-            // Actually removes all searched cities and clears elements from DOM
+            // Removes all searched cities and clears elements from DOM
             function clearCityDiv(){
                 while (cityDiv.firstChild){
                     cityDiv.removeChild(cityDiv.firstChild)
                 }
             }
-
-
 
             // Makes the click on Brewery instructions visible
         function makeVisible(){
@@ -203,24 +133,6 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         }
          
     
-   // https://data.opendatasoft.com/api/records/1.0/search/?dataset=open-beer-database-breweries%40public-us&rows=20&start=30
-
-  
-
-
-
-
-// function toggle_visibility(id) {
-//     var e = document.getElementsByClassName(id);
-//     if(e.style.display == 'block')
-//        e.style.display = 'none';
-//     else
-//        e.style.display = 'block';
-//  }
-
-
-
-
 function noLogOut(){
     if(!window.localStorage.getItem('token')){
         document.getElementById('logout').style.display = 'none'

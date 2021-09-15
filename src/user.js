@@ -7,9 +7,6 @@ function showLogout(){
   document.getElementById('logout').style.display = 'inline'
 }
 
-// function logoutFn(){
-//   localStorage.removeItem('token')
-// }
 function greetUser(){
   let usersName = document.getElementById('users-name')
   let userName = document.getElementById('username')
@@ -39,9 +36,6 @@ function userSubmit(e){
   })
   .then(resp=> resp.json())
   .then(json=> {
-    console.log(json)
-    //window.localStorage.setItem('name', json["token"]["user"]['name'])
-    //window.localStorage.setItem('username', json["token"]["user"]['username'])
     window.localStorage.setItem('token', json["token"]['jwt'])
     window.localStorage.setItem('session', true)
   })
@@ -55,7 +49,6 @@ function fetchUser(){
   console.log('fetching user')
    const token = localStorage.getItem('token')
   if (token != null){
-  console.log(token)
   fetch('http://localhost:3000/get_current_user', {
     headers: {
       'Authorization': token,
@@ -98,82 +91,5 @@ function fetchUser(){
    }  
   }
 }
-    // }}})
-    // fetch('http://localhost:3000/get_session_user', {
-    //   method: 'GET',
-    //   credentials:'include',
-    //   headers: {
-    //     'Content-type': 'application/json',
-    //     'Accept': 'application/json'
-    //   }
-    // })
-    // .then(resp => resp.json())
-    // .then(user=> {
-    //     if(user.error){
-    //       alert(user.error)
-    //     } else{
-    //       userForm.remove()
-    //       showLogout()
-    //       let userDiv = document.getElementById("welcome");
-    //       let h4 = document.createElement('h4');
-    //        h4.style.color = 'Brown';
-    //        h4.id = 'welcoming';
-    //       h4.innerText =  `Welcome, ${user.user.username}`;
-    //        userDiv.appendChild(h4);
-    //   console.log(user.user.username);
-    //   }
-    // }) 
    
-  
-  
-  
-
-//   const token = localStorage.getItem('token')
-//   if (token != null){
-//   console.log(token)
-//   fetch('http://localhost:3000/get_current_user', {
-//     headers: {
-//       'Authorization': token,
-//     }
-// })
-// .then(res => res.json())
-// .then(resp=> { 
-//   if(resp.error){
-//     alert(resp.error)
-//   } else {
-//       userForm.remove()
-//       showLogout()
-//       let userDiv = document.getElementById("welcome")
-//       let h4 = document.createElement('h4')
-//       h4.style.color = 'Brown'
-//       h4.id = 'welcoming'
-//       h4.innerText =  `Welcome, ${resp.user.username}`
-//       userDiv.appendChild(h4)
-//   console.log(resp.user.username)}})
-//   .catch(err=>console.log)
-//   }
-
   fetchUser()
-
-  //function postToy(toy_data) {
-      //     fetch('http://localhost:3000/toys', {
-      //         method: 'POST',
-      //         headers: {
-      //           'Content-Type': 'application/json',
-      //           Accept: "application/json"
-      //         },
-      //         body: JSON.stringify({
-    //           "name": toy_data.name.value,
-    //           "image": toy_data.image.value,
-    //           "likes": 0
-      
-    //         })
-    //       })
-    //       .then(res => res.json())
-    //       .then((obj_toy) => {
-    //         let new_toy = renderToys(obj_toy)
-    //         divCollect.append(new_toy)
-    //         console.log("obj_toy: "+ obj_toy.name)
-    //         console.log("obj_toy_name: "+obj_toy.image)
-    //       })
-    //   }
