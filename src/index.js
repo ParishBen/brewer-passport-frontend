@@ -119,15 +119,15 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
         let structure = function toTitleCase( str ) 
         {
             let nowStr = str.toString()
-           return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join( " " );
+           return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join(" ");
         }
          
     
 function noLogOut(){
     if(!window.localStorage.getItem('token')){
-        document.getElementById('logout').style.display = 'none'
+       return document.getElementById('logout').style.display = 'none'
     } else {
-        document.getElementById('logout').style.display = 'box'
+       return document.getElementById('logout').style.display = 'box'
     }
 }
 noLogOut()

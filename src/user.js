@@ -44,7 +44,7 @@ function userSubmit(e){
 }
 
  
-function fetchUser(){
+(function fetchUser(){
    const token = localStorage.getItem('token')
   if (token != null){
   fetch('http://localhost:3000/get_current_user', {
@@ -68,6 +68,6 @@ function fetchUser(){
   }})
   .catch(err=>console.log)    
   }
- }
+ })();
    
-  fetchUser()
+  //fetchUser()

@@ -335,7 +335,7 @@ function renderFavoriteList(theCurrentUserList){
       
      let ol = document.createElement('ol')
      ol.id = 'favoritelistOL'
-     // Live Coding -> Sort Breweries Alphabetically By Name
+     // Alphabetizing the Favoritelist by Brewery Name.
      
      theCurrentUserList.sort(function(a, b){
              
