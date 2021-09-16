@@ -37,7 +37,6 @@ function userSubmit(e){
   .then(resp=> resp.json())
   .then(json=> {
     window.localStorage.setItem('token', json["token"]['jwt'])
-    window.localStorage.setItem('session', true)
   })
    .then(()=> {showLogout()})
     .catch(err=> console.log(err))
@@ -68,26 +67,7 @@ function fetchUser(){
       userDiv.appendChild(h4)
   }})
   .catch(err=>console.log)    
-} else {
-      if(localStorage.getItem('session') === 'true'){
-       fetch('http://localhost:3000/get_session_user')
-      .then(resp => resp.json())
-      .then(user=> {
-          if(user.error){
-            alert(user.error)
-        } else{
-          userForm.remove()
-          showLogout()
-          let userDiv = document.getElementById("welcome");
-          let h4 = document.createElement('h4');
-           h4.style.color = 'Brown';
-           h4.id = 'welcoming';
-          h4.innerText =  `Welcome, ${user.user.username}`;
-           userDiv.appendChild(h4);
-      }
-    }) 
-   }  
   }
-}
+ }
    
   fetchUser()

@@ -146,6 +146,9 @@ function fetchWishList(){
         .then(json=> renderWishList(json)) // Fetches Wishlist & renderWishlist() persists data to DOM
  }
 
+function breweryLiContent(brew){
+    return `${brew.name} - Address: ${brew.address ? brew.address : "Not Listed"} - City: ${brew.city} - Phone Num: ${brew.phoneNum ? brew.phoneNum : "Not Listed"} - Website: ${brew.website ? brew.website : "Not Listed"} - State: ${brew.state ? brew.state : "Not Listed"} - Description: ${brew.description ? brew.description : "Not Listed"} - Country: ${brew.country ? brew.country : "Not Listed"}`
+}
 
 // function that makes DOM elements to display the returned promise from the fetch request above
 function renderWishList(theCurrentUserList){
@@ -168,7 +171,7 @@ function renderWishList(theCurrentUserList){
 
     let counter = 0;
     // will go through the current user's array of wishlist breweries & creates a li for each Brewery and then sets unique id's to each Brewery Li.
-    // Then adding a delete button and a send to favorites button
+    // Then adding a delete button and a send->to->favorites button
     theCurrentUserList.forEach(function(brewery){ 
         let li = document.createElement('li')
         li.setAttribute('id', `wishlistLI-${counter}`)
@@ -180,7 +183,7 @@ function renderWishList(theCurrentUserList){
         switchBtn.addEventListener('click', switchToFaves)
         // added event listeners to the buttons to perform functionality upon click
         // adding innerHTML for each Brewery Li. 
-        li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+        li.innerHTML += breweryLiContent(brewery)
         li.append(' ', delBtn, ' ', switchBtn)
         ol.append(li)
         ol.className = 'semi-invisible'
@@ -191,8 +194,7 @@ function renderWishList(theCurrentUserList){
         let banner = document.createElement('h3')
          banner.id = 'wishListHeader'
          banner.innerText = 'WISHLIST:'
-        wishListDiv.append(banner, ol)
-        
+         wishListDiv.append(banner, ol)     
     }
     // At first OL has class of semi-invisble and the wishlist only has OL & banner as children. If this is the case then upon a click we're changing the class to show the entire wishlist.
     if ( wishListDiv.children.length <=2 && ol.className == 'semi-invisible'){ wishListDiv.className = 'wishList-show';
