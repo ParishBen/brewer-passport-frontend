@@ -1,3 +1,8 @@
+
+/**** ESTABLISHING Server Route URLs to conduct CRUD actions ****/
+let wishlistURL = 'http://localhost:3000/wishlists/'
+let favoritelistURL = 'http://localhost:3000/favoritelists/'
+
 // Constructs a class of Breweries
 class Brewery{
     constructor(city = null, state = null, address1 = null, country = null, phone = null, name_breweries, descript = null, website = null ){
@@ -15,6 +20,7 @@ class Brewery{
 
 let breweries = [];  // Breweries starts as empty array
 
+
 // ******Setting up Nav Bar with wishlist & favorite list buttons********
 let nav = document.querySelector('nav');   // NAVBAR
 let wishbutton = document.createElement('button'); // Create the Navbar button to render Wishlist
@@ -29,10 +35,6 @@ favoritebutton.className = "favorite-button-class";
 
 nav.append(wishbutton, favoritebutton) /******NAVBAR now holds wishlist & favorite buttons  */
 
-
-/**** ESTABLISHING Server Route URLs to conduct CRUD actions ****/
-let wishlistURL = 'http://localhost:3000/wishlists/'
-let favoritelistURL = 'http://localhost:3000/favoritelists/'
  
 // function used in many Fetch requests to grab the username
 function grabUserName(){
@@ -42,7 +44,7 @@ function grabUserName(){
     return theUsername
 }
 
-// Adding a fetched Brewery to the User's Wishlist
+// Adding a fetched Brewery from the search to the User's Wishlist
 function addToWishList(e) {
     let breweryP = e.target.parentElement // The clicked button's Parent element (Brewery Name) 
 
@@ -86,85 +88,73 @@ function addToWishList(e) {
               fetchWishList()
              }
            })
-        .catch(err=> console.log(err))
-    }
+    .catch(err=> console.log(err))
+}
 
 // Deletes a Brewery from the User's wishlist
 function deleteBrewWish(e){
-let breweryP = e.target.parentElement //Clicked button's Parent Element (Brewery's info)
-let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name + other text in Element
+  let breweryP = e.target.parentElement //Clicked button's Parent Element (Brewery's info)
+  let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name + other text in Element
+  let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
 
-let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
-if(brewName.match(/[#]/))
-brewName = brewName.replace('#', '%23')
+  if(brewName.match(/[#]/))
+    brewName = brewName.replace('#', '%23')
 
-// fetching the brewery to delete from this user's wishlist
-return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {
+// sending Delete fetch request to remove brewery from this user's wishlist
+  return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {  //wishlists/:username/:breweryName
     method: 'DELETE',
     headers: {
         'Content-Type':'application/json',
         Accept:'application/json'
-        
         }
-})
-.then(fetchWishList()) // This will redisplay the wishlist that's been updated
-.then(fetchWishList())
-.then(function(){
+     })
+      .then(fetchWishList()) // This will rerender the wishlist that's been updated
+      .then(fetchWishList())
     // this will circle through the displayed brewery titles in CityDiv & then change the color back to black if it was green
-    let ps = document.querySelectorAll('p.brewery-info-class')
-    for (p of ps){
-        let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
-        brewName == titlep ? p.style.color = "black" : ''
-    }
-})
-.catch(err=> console.log(err))
-}
+      .then(function(){
+           let ps = document.querySelectorAll('p.brewery-info-class')
+            for (p of ps){
+              let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '') 
+              brewName === titlep ? p.style.color = "black" : ''
+            }
+        })
+   .catch(err=> console.log(err))
+ }
 
-logOutButton.addEventListener("click", logoutFn)
-
-function logoutFn(){
-    if(window.localStorage.getItem('token')){
-        window.localStorage.setItem('session', false)
-        window.localStorage.removeItem('token')
-        fetch('http://localhost:3000/logout')
-        .then(resp=> resp.json())
-        .then(ressy=> console.log(ressy.text))
-        .then(()=> location.reload())
-        .catch(err=>console.log(err)) 
-    } else {
-        fetch('http://localhost:3000/logout')
-        .then(resp=> resp.json())
-        .then(ressy=> console.log(ressy.text))
-        .then(()=> location.reload())
-        .catch(err=>console.log(err))   
-    }
-}
-
-// fetches the user's wishlist on click
-wishbutton.addEventListener("click", fetchWishList)
-
+ 
+ function logoutFn(){
+     if(window.localStorage.getItem('token')){
+         window.localStorage.removeItem('token')
+        }
+     return fetch('http://localhost:3000/logout')
+          .then(resp=> resp.json())
+          .then(ressy=> console.log(ressy.text))
+          .then(()=> location.reload())
+          .catch(err=>console.log(err)) 
+   }
+    
+    // fetches the user's wishlist on click
+    wishbutton.addEventListener("click", fetchWishList)
+    logOutButton.addEventListener("click", logoutFn)
+    
 
 //fetch request to backend to grab the user's wishlist
 function fetchWishList(){
     
-    return fetch(wishlistURL+grabUserName(), {
-    })
-    .then(resp=> resp.json())
-    .then(json=> renderWishList(json))
-
-}
+    return fetch(wishlistURL+grabUserName())
+        .then(resp=> resp.json())
+        .then(json=> renderWishList(json)) // Fetches Wishlist & renderWishlist() persists data to DOM
+ }
 
 
 // function that makes DOM elements to display the returned promise from the fetch request above
 function renderWishList(theCurrentUserList){
     // let wishListDiv = document.querySelector('div#wishListDiv')
     let wishListDiv = document.querySelector('div#wishListDiv')
-    //wishListDiv.className = 'semi-invisible'
-    
     let ol = document.createElement('ol')
     ol.id = 'wishlistOL'
-
-    theCurrentUserList.sort(function(a, b){
+    
+    theCurrentUserList.sort(function(a, b){ // Alphabetizing the Wishlist by Brewery Name.
              
         if (a.name < b.name) {
           return -1;
@@ -172,10 +162,10 @@ function renderWishList(theCurrentUserList){
         if (a.name > b.name) {
           return 1;
         }
-      
         // names must be equal
         return 0;
       });
+
     let counter = 0;
     // will go through the current user's array of wishlist breweries & creates a li for each Brewery and then sets unique id's to each Brewery Li.
     // Then adding a delete button and a send to favorites button
