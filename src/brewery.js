@@ -78,13 +78,13 @@ function addToWishList(e) {
         .then(resp => resp.json())
         .then(parsedresp=> {
             if(parsedresp.error)
-            alert(parsedresp.error)
+            return alert(parsedresp.error)
         })
         .then(function(){
             breweryP.style.color = "green"})
         .then(function(){
           let divList = document.querySelector('div.wishList-show')
-            if(divList && divList.children.length >= 1){
+            if(divList && divList.children.length > 1){
               // function to rerender the new wishlist if it's displayed to the DOM
                  fetchWishList()
                  fetchWishList()
@@ -101,8 +101,8 @@ function deleteBrewWish(e){
   let cutBrewery = breweryP.innerText.toString()  // This gets the Brewery Name + other text in Element
   let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
 
-  if(brewName.match(/[#]/))
-    brewName = brewName.replace('#', '%23')
+  if(brewName.match(/[#/]/))
+    brewName = brewName.replace('#', '%23').replace('/','%2f')
 
 // sending Delete fetch request to remove brewery from this user's wishlist
   return fetch(wishlistURL+grabUserName()+'/'+brewName.toString(), {  //wishlists/:username/:breweryName
@@ -142,21 +142,66 @@ function deleteBrewWish(e){
 //fetch request to backend to grab the user's wishlist
 function fetchWishList(){
     
-    return fetch(wishlistURL+grabUserName())
-        .then(resp=> resp.json())
-        .then(json=> renderWishList(json)) // Fetches Wishlist & renderWishlist() persists data to DOM
+ return fetch(wishlistURL+grabUserName())
+   .then(resp=> resp.json())
+   .then(json=> {
+        renderWishList(json)
+    }) // Fetches Wishlist & renderWishlist() persists data to DOM
  }
 
 function breweryLiContent(brew){
     return `${brew.name} - Address: ${brew.address ? brew.address : "Not Listed"} - City: ${brew.city} - Phone Num: ${brew.phoneNum ? brew.phoneNum : "Not Listed"} - Website: ${brew.website ? brew.website : "Not Listed"} - State: ${brew.state ? brew.state : "Not Listed"} - Description: ${brew.description ? brew.description : "Not Listed"} - Country: ${brew.country ? brew.country : "Not Listed"}`
 }
+function appendBanner(){
+    if (ol.firstChild.innerHTML != ''){
+        let banner = document.createElement('h3')
+         banner.id = 'wishListHeader'
+         banner.innerText = 'WISHLIST:'
+         wishListDiv.append(banner, ol)     
+    }
+}
+
+function breweryLiWish(brewery, index){ 
+
+    let li = document.createElement('li')
+    li.setAttribute('id', `wishlistLI-${index}`)
+    
+    let delBtn = document.createElement('button')
+    delBtn.innerHTML = "Delete"
+    delBtn.addEventListener('click',deleteBrewWish)
+    
+    let switchBtn = document.createElement('button')
+    switchBtn.innerHTML = "Send => Favorites"
+    switchBtn.addEventListener('click', switchToFaves)
+    // added event listeners to the buttons to perform functionality upon click
+    // adding innerHTML for each Brewery Li. 
+    li.innerHTML += breweryLiContent(brewery)
+    li.append(' ', delBtn, ' ', switchBtn)
+    ol.append(li)
+    ol.className = 'semi-invisible'
+
+}
+
+function toggleWishList(){
+    if ( wishListDiv.children.length <=2 && ol.className == 'semi-invisible'){ 
+          wishListDiv.className = 'wishList-show';
+          ol.className = 'ordered-list-show';
+      } 
+    if (wishListDiv.children.length > 2 ) {  // if it's displayed then the wishlist has more than 2 children (the brewery Li's) so we will go through each childElement and delete it from the WishListDiv
+    // ol.className = 'ordered-list-show';
+    // wishListDiv.className = 'wishList-show';
+    while (wishListDiv.firstChild){
+        wishListDiv.removeChild(wishListDiv.firstChild)
+    }
+  }
+}
 
 // function that makes DOM elements to display the returned promise from the fetch request above
 function renderWishList(theCurrentUserList){
     // let wishListDiv = document.querySelector('div#wishListDiv')
-    let wishListDiv = document.querySelector('div#wishListDiv')
-    let ol = document.createElement('ol')
-    ol.id = 'wishlistOL'
+     this.wishListDiv = document.querySelector('div#wishListDiv')
+     this.ol = document.createElement('ol')
+       ol.id = 'wishlistOL'
     
     theCurrentUserList.sort(function(a, b){ // Alphabetizing the Wishlist by Brewery Name.
              
@@ -170,49 +215,22 @@ function renderWishList(theCurrentUserList){
         return 0;
       });
 
-    let counter = 0;
+   
     // will go through the current user's array of wishlist breweries & creates a li for each Brewery and then sets unique id's to each Brewery Li.
     // Then adding a delete button and a send->to->favorites button
-    theCurrentUserList.forEach(function(brewery){ 
-        let li = document.createElement('li')
-        li.setAttribute('id', `wishlistLI-${counter}`)
-        let delBtn = document.createElement('button')
-        delBtn.innerHTML = "Delete"
-        delBtn.addEventListener('click',deleteBrewWish)
-        let switchBtn = document.createElement('button')
-        switchBtn.innerHTML = "Send => Favorites"
-        switchBtn.addEventListener('click', switchToFaves)
-        // added event listeners to the buttons to perform functionality upon click
-        // adding innerHTML for each Brewery Li. 
-        li.innerHTML += breweryLiContent(brewery)
-        li.append(' ', delBtn, ' ', switchBtn)
-        ol.append(li)
-        ol.className = 'semi-invisible'
-        counter++
-    })
+    theCurrentUserList.forEach((brewery,index)=> breweryLiWish(brewery, index))
     // if there's a brewery in the list then we'll make the banner and append the entire OL
-    if (ol.firstChild.innerHTML != ''){
-        let banner = document.createElement('h3')
-         banner.id = 'wishListHeader'
-         banner.innerText = 'WISHLIST:'
-         wishListDiv.append(banner, ol)     
-    }
+    appendBanner()
     // At first OL has class of semi-invisble and the wishlist only has OL & banner as children. If this is the case then upon a click we're changing the class to show the entire wishlist.
-    if ( wishListDiv.children.length <=2 && ol.className == 'semi-invisible'){ wishListDiv.className = 'wishList-show';
-    ol.className = 'ordered-list-show';
-  } if(wishListDiv.children.length > 2 ) {  // if it's displayed then the wishlist has more than 2 children (the brewery Li's) so we will go through each childElement and delete it from the WishListDiv
-    ol.className = 'ordered-list-show';
-    wishListDiv.className = 'wishList-show';
-    while (wishListDiv.firstChild){
-        wishListDiv.removeChild(wishListDiv.firstChild)
-    }
-  }
+    toggleWishList()
 }
+
 
 // refactored to conduct a delete of the Brewery in wishlist first and then send to favorites
 function switchToFaves(e){
     addFaveFromWishList(e)
     deleteBrewWish(e)
+    
 }
 
 // Since I chose to delete the Brewery from Wishlist first I had to manually parse through the paragraph of Brewery info & assign values from segments of the paragraph
@@ -230,7 +248,18 @@ function addFaveFromWishList(e){
     .then(jsonResp => {
         postToFavorites(jsonResp.brewery)
      })
+     
     .catch(err=> console.log(err))
+}
+function reRenderFaves(){
+        
+    let divList = document.querySelector('div.favoriteList-show')
+      if(divList && divList.children.length > 1){ // Means that the FavoriteList is currently rendered
+         fetchFavoriteList()
+         fetchFavoriteList()
+      } else {
+            fetchFavoriteList()
+     }
 }
 
 function addToFavorites(e) {
@@ -262,23 +291,24 @@ function addToFavorites(e) {
            .then(res => res.json())
            .then(jsonResp => {
                if (jsonResp.error)
-               alert(jsonResp.error)
+               return alert(jsonResp.error)
            })
            .then(function(){ 
                breweryP.style.color = 'goldenrod'   
-         })
-       .then(function(){
-           let divList = document.querySelector('div.favoriteList-show')
-           if(divList && divList.children.length >= 2){
-               fetchFavoriteList()
-               fetchFavoriteList()
-           } else {
-               fetchFavoriteList()
-           }
-       })
-       .catch(err=> console.log(err))
+              })
+           .then(function() {
+             let divList = document.querySelector('div.favoriteList-show')
+             if(divList && divList.children.length > 1){ // Means that the FavoriteList is currently rendered
+                fetchFavoriteList()
+                fetchFavoriteList()
+             } else {
+                 fetchFavoriteList()
+            }
+          })
+        .catch(err=> console.log(err))
     }
 
+    
 
     function postToFavorites(brewery) {        
        
@@ -306,17 +336,9 @@ function addToFavorites(e) {
                .then(res => res.json())
                .then(jsonResp => {
                    if (jsonResp.error)
-                   alert(jsonResp.error)
+                   return alert(jsonResp.error)
                })
-           .then(function(){
-               let divList = document.querySelector('div.favoriteList-show')
-               if(divList && divList.children.length >= 2){
-                   fetchFavoriteList()
-                   fetchFavoriteList()
-               } else {
-                   fetchFavoriteList()
-               }
-           })
+           .then(reRenderFaves())
            .catch(err=> console.log(err))
         }
 
@@ -341,10 +363,13 @@ function breweryLi(brewery, index){
 }
 
 function showFaveBannerList(){
-    let banner = document.createElement('h3')
-         banner.id = 'favoriteListHeader'
-         banner.innerText = 'FAVORITES:'
-         favoriteListDiv.append(banner, ol)
+    
+    if (ol.firstChild.innerHTML != ''){
+         let banner = document.createElement('h3')
+           banner.id = 'favoriteListHeader'
+           banner.innerText = 'FAVORITES:'
+           favoriteListDiv.append(banner, ol)
+    }
 }
 
 function toggleFaveList(){
@@ -353,8 +378,8 @@ function toggleFaveList(){
         ol.className = 'ordered-list-show';
        } 
        if(favoriteListDiv.children.length > 2 ) { 
-           ol.className = 'ordered-list-show';
-           favoriteListDiv.className = 'favoriteList-show';
+        //    ol.className = 'ordered-list-show';
+        //    favoriteListDiv.className = 'favoriteList-show';
     while (favoriteListDiv.firstChild){
         favoriteListDiv.removeChild(favoriteListDiv.firstChild)
     }
@@ -363,9 +388,8 @@ function toggleFaveList(){
 
 function renderFavoriteList(theCurrentUserList){
       this.favoriteListDiv = document.querySelector('div#favoriteListDiv')
-      console.log(this.Request, Request.body)
       this.ol = document.createElement('ol')
-     ol.id = 'favoritelistOL'
+        ol.id = 'favoritelistOL'
      // Alphabetizing the Favoritelist by Brewery Name.
      
      theCurrentUserList.sort(function(a, b){
@@ -382,12 +406,9 @@ function renderFavoriteList(theCurrentUserList){
            
      theCurrentUserList.forEach((brewery, index) => breweryLi(brewery, index))
      
-     if (ol.firstChild.innerHTML != ''){ //If there are breweries in list - SHOW it to DOM
+      //If there are breweries in list - SHOW it to DOM
        showFaveBannerList()  
-         
-     }
-     toggleFaveList()    
-     
+       toggleFaveList()      
  }
  
  function deleteBrewFave(e){
@@ -395,8 +416,8 @@ function renderFavoriteList(theCurrentUserList){
     let cutBrewery = breweryParent.innerText.toString()
     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
    
-        if(brewName.match(/[#]/))
-           brewName = brewName.replace('#', '%23')
+        if(brewName.match(/[#/]/))
+           brewName = brewName.replace('#', '%23').replace('/','%2f')
     
     return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), { //Delete Route favorites/:username/:brewName
         method: 'DELETE',
@@ -411,7 +432,7 @@ function renderFavoriteList(theCurrentUserList){
         let ps = document.querySelectorAll('p.brewery-info-class')
         for (p of ps){
             let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
-            brewName == titlep ? p.style.color = "black" : ''
+            brewName === titlep ? p.style.color = "black" : ''
         }
     })
     .catch(err=> console.log(err))
