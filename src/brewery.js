@@ -347,6 +347,20 @@ function showFaveBannerList(){
          favoriteListDiv.append(banner, ol)
 }
 
+function toggleFaveList(){
+    if ( favoriteListDiv.children.length <=2 && ol.className == 'semi-invisible'){ 
+        favoriteListDiv.className = 'favoriteList-show';
+        ol.className = 'ordered-list-show';
+       } 
+       if(favoriteListDiv.children.length > 2 ) { 
+           ol.className = 'ordered-list-show';
+           favoriteListDiv.className = 'favoriteList-show';
+    while (favoriteListDiv.firstChild){
+        favoriteListDiv.removeChild(favoriteListDiv.firstChild)
+    }
+   }
+}
+
 function renderFavoriteList(theCurrentUserList){
       this.favoriteListDiv = document.querySelector('div#favoriteListDiv')
       console.log(this.Request, Request.body)
@@ -368,22 +382,12 @@ function renderFavoriteList(theCurrentUserList){
            
      theCurrentUserList.forEach((brewery, index) => breweryLi(brewery, index))
      
-     if (ol.firstChild.innerHTML != ''){
+     if (ol.firstChild.innerHTML != ''){ //If there are breweries in list - SHOW it to DOM
        showFaveBannerList()  
          
      }
-         
-     if ( favoriteListDiv.children.length <=2 && ol.className == 'semi-invisible'){ 
-         favoriteListDiv.className = 'favoriteList-show';
-         ol.className = 'ordered-list-show';
-        } 
-        if(favoriteListDiv.children.length > 2 ) { 
-            ol.className = 'ordered-list-show';
-            favoriteListDiv.className = 'favoriteList-show';
-     while (favoriteListDiv.firstChild){
-         favoriteListDiv.removeChild(favoriteListDiv.firstChild)
-     }
-    }
+     toggleFaveList()    
+     
  }
  
  function deleteBrewFave(e){
