@@ -14,7 +14,7 @@ class Brewery{
         this.phoneNum = phone
         this.description = descript
         this.website = website
-
+        
     }
 }
 
@@ -32,8 +32,12 @@ wishbutton.className = "wishlist-button-class";
 favoritebutton.innerText = "Favorited List";
 favoritebutton.id = "favoritebutton";
 favoritebutton.className = "favorite-button-class";
-
 nav.append(wishbutton, favoritebutton) /******NAVBAR now holds wishlist & favorite buttons  */
+
+// fetches the user's wishlist on click
+wishbutton.addEventListener("click", fetchWishList)
+logOutButton.addEventListener("click", logoutFn)
+favoritebutton.addEventListener("click", fetchFavoriteList)
 
  
 // function used in many Fetch requests to grab the username
@@ -133,9 +137,6 @@ function deleteBrewWish(e){
           .catch(err=>console.log(err)) 
    }
     
-    // fetches the user's wishlist on click
-    wishbutton.addEventListener("click", fetchWishList)
-    logOutButton.addEventListener("click", logoutFn)
     
 
 //fetch request to backend to grab the user's wishlist
@@ -319,7 +320,6 @@ function addToFavorites(e) {
            .catch(err=> console.log(err))
         }
 
-favoritebutton.addEventListener("click", fetchFavoriteList)
 
 function fetchFavoriteList(){
 
@@ -328,62 +328,64 @@ function fetchFavoriteList(){
     .then(json=> renderFavoriteList(json))
 }
 
+function breweryLi(brewery, index){ 
+    let li = document.createElement('li')
+    li.setAttribute('id', `favListLI-${index}`)
+    let delBtn = document.createElement('button')
+    delBtn.innerHTML = "Delete"
+    delBtn.addEventListener('click', deleteBrewFave)
+    li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+    li.append(' ', delBtn)
+    ol.append(li)
+    ol.className = 'semi-invisible'
+}
 
+function showFaveBannerList(){
+    let banner = document.createElement('h3')
+         banner.id = 'favoriteListHeader'
+         banner.innerText = 'FAVORITES:'
+         favoriteListDiv.append(banner, ol)
+}
 
 function renderFavoriteList(theCurrentUserList){
-    let favoriteListDiv = document.querySelector('div#favoriteListDiv')
-      
-     let ol = document.createElement('ol')
+      this.favoriteListDiv = document.querySelector('div#favoriteListDiv')
+      console.log(this.Request, Request.body)
+      this.ol = document.createElement('ol')
      ol.id = 'favoritelistOL'
      // Alphabetizing the Favoritelist by Brewery Name.
      
      theCurrentUserList.sort(function(a, b){
-             
-             if (a.name < b.name) {
+         
+         if (a.name < b.name) {
                return -1;
-             }
+            }
              if (a.name > b.name) {
-               return 1;
+                 return 1;
              }
              // names must be equal
              return 0;
            });
-
-     let counter = 0;
-     theCurrentUserList.forEach(function(brewery){ 
-         let li = document.createElement('li')
-         li.setAttribute('id', `favListLI-${counter}`)
-         let delBtn = document.createElement('button')
-         delBtn.innerHTML = "Delete"
-         delBtn.addEventListener('click', deleteBrewFave)
-         li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
-         li.append(' ', delBtn)
-         ol.append(li)
-         ol.className = 'semi-invisible'
-
-     counter++
-   })
+           
+     theCurrentUserList.forEach((brewery, index) => breweryLi(brewery, index))
+     
      if (ol.firstChild.innerHTML != ''){
-         let banner = document.createElement('h3')
-         banner.id = 'favoriteListHeader'
-         banner.innerText = 'FAVORITES:'
-         favoriteListDiv.append(banner, ol)
+       showFaveBannerList()  
          
      }
          
      if ( favoriteListDiv.children.length <=2 && ol.className == 'semi-invisible'){ 
          favoriteListDiv.className = 'favoriteList-show';
          ol.className = 'ordered-list-show';
-   } 
-     if(favoriteListDiv.children.length > 2 ) { 
-      ol.className = 'ordered-list-show';
-      favoriteListDiv.className = 'favoriteList-show';
+        } 
+        if(favoriteListDiv.children.length > 2 ) { 
+            ol.className = 'ordered-list-show';
+            favoriteListDiv.className = 'favoriteList-show';
      while (favoriteListDiv.firstChild){
          favoriteListDiv.removeChild(favoriteListDiv.firstChild)
      }
-   }
+    }
  }
-
+ 
  function deleteBrewFave(e){
     let breweryParent = e.target.parentElement
     let cutBrewery = breweryParent.innerText.toString()
@@ -392,7 +394,7 @@ function renderFavoriteList(theCurrentUserList){
         if(brewName.match(/[#]/))
            brewName = brewName.replace('#', '%23')
     
-    return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), { //
+    return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), { //Delete Route favorites/:username/:brewName
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',
