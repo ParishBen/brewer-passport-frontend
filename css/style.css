@@ -65,6 +65,7 @@ div#city-div {
     color: rgb(6, 41, 71);
     border-width: 3pt;
     border-color:beige;
+    font-weight: bold;
   }
 
   #searchcity:hover{
@@ -85,7 +86,13 @@ div#city-div {
   input[type=text]:focus {
     width: 250px;
   }
- 
+  
+  input[type=submit]:hover {
+    border-width: 3pt;
+    border-color: beige;
+    font-weight: bold;
+  }
+
   #user-form {
     position:right;
   }
