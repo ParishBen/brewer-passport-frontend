@@ -230,7 +230,22 @@ function renderWishList(theCurrentUserList){
 function switchToFaves(e){
     addFaveFromWishList(e)
     deleteBrewWish(e)
-    
+    checkOnDiv(e)  
+}
+
+function checkOnDiv(e){
+    let breweryP = e.target.parentElement  //The Brewery Name left of button clicked
+    let realBrewery = breweryP.innerText.toString()
+    let clickedBrew = realBrewery.substring(0, realBrewery.indexOf(' - Address'))
+    let wishDiv = document.querySelector('ol#wishlistOL')
+    let faveDiv = document.querySelector('ol#favoritelistOL')
+    if(Array.from(wishDiv).forEach(brew=> { brew.includes(clickedBrew)}))
+    console.log(clickedBrew)
+    fetchWishList()
+    fetchWishList()
+    if(!Array.from(faveDiv).forEach(brew=> { brew.includes(clickedBrew)}))
+    fetchFavoriteList()
+    fetchFavoriteList()
 }
 
 // Since I chose to delete the Brewery from Wishlist first I had to manually parse through the paragraph of Brewery info & assign values from segments of the paragraph
@@ -251,6 +266,7 @@ function addFaveFromWishList(e){
      
     .catch(err=> console.log(err))
 }
+
 function reRenderFaves(){
         
     let divList = document.querySelector('div.favoriteList-show')
@@ -338,7 +354,7 @@ function addToFavorites(e) {
                    if (jsonResp.error)
                    return alert(jsonResp.error)
                })
-           .then(reRenderFaves())
+           .then(()=>reRenderFaves())
            .catch(err=> console.log(err))
         }
 

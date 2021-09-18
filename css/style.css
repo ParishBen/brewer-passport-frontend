@@ -34,6 +34,7 @@ div#city-div {
     background-color:lightgreen;
     box-shadow: 5px 5px seagreen;
     border-color: grey;
+    
   }
 
   .favoriteList-show {
@@ -50,12 +51,41 @@ div#city-div {
     text-align:center;
   }
 
+  .wishList-show:hover{
+    font-size: 1.2em;
+  }
+
+  .favoriteList-show:hover{
+    font-size: larger;
+
+  }
+
+  button:hover{
+    
+    color: rgb(6, 41, 71);
+    border-width: 3pt;
+    border-color:beige;
+  }
+
+  #searchcity:hover{
+    border-width: 3pt;
+    border-color:beige;
+  }
+
   h3#favoriteListHeader{
     text-decoration:underline;
     color:goldenrod;
     text-align:center;
   }
+  input[type=text] {
+    width: 100px;
+    transition: ease-in-out, .44s width ease-in-out;
+  }
 
+  input[type=text]:focus {
+    width: 250px;
+  }
+ 
   #user-form {
     position:right;
   }
