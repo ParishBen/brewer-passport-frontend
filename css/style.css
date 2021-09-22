@@ -12,11 +12,15 @@ div#city-div {
     text-decoration: underline;
     color: darkslategray;
     font-weight: bolder;
+    /* position:absolute;
+    left: 15px; */
   }
   
   #clickInstruct {
     font-weight: bolder;
     color:rgb(224, 219, 213);
+    /* position: relative;
+    left: 29pt; */
   }
 
   .semi-invisible {
@@ -36,6 +40,9 @@ div#city-div {
     border-color: grey;
     
   }
+#stock {
+  position:unset;
+}
 
   .favoriteList-show {
     width:fit-content;
@@ -92,13 +99,22 @@ div#city-div {
     border-color: beige;
     font-weight: bold;
   }
-
+img#unlogged{
+  position: absolute;
+  top: 600px;
+  left: 100px;
+  bottom: inherit;
+}
   #user-form {
     position:right;
   }
 
    body {
     background-color: burlywood;
+    
+    background-image:url("https://coolmaterial.com/wp-content/uploads/2015/12/dogfishhead.jpg");
+    background-repeat: no-repeat;
+    background-position-x: right;
   }
   h4#welcoming {
     color:brown;
