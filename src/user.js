@@ -70,17 +70,11 @@ function userSubmit(e){
   }
  })();
    
-(function anotherOne(){
-  if(!window.localStorage.getItem('token')){
+(function anotherPic(){
+  
     let surc = document.querySelector('img#unlogged')
     surc.id = 'UserLanding-img'
-    surc.setAttribute('src', "https://images.unsplash.com/photo-1436076863939-06870fe779c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmVlcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60")
-    surc.style.width = '300px'
-    surc.style.height = '250px'
-    
-    
-    console.log(surc)
-     //document.querySelector('body').style.background = `url("${src.url}") `
-    
-  }
+       surc.setAttribute('src', "https://images.unsplash.com/photo-1436076863939-06870fe779c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmVlcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60")
+       surc.style.width = '300px'
+       surc.style.height = '250px'   
 })();
