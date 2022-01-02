@@ -327,7 +327,6 @@ function addToFavorites(e) {
     
 
     function postToFavorites(brewery) {        
-       
         return fetch(favoritelistURL, {
             method: 'POST',
 
