@@ -4,7 +4,7 @@ const cityForm = document.getElementById("city-form")
 const cityInput = document.getElementById("city-search-input")
 const cityDiv = document.getElementById("city-div")
 
-cityForm.addEventListener("submit", citySubmit)
+  cityForm.addEventListener("submit", citySubmit)
 
 function citySubmit(){
     event.preventDefault()
@@ -60,74 +60,70 @@ return fetch(`https://data.opendatasoft.com/api/records/1.0/search/?dataset=open
    }
 
     
-        // The function to show/hide more info on the fetched Brewery    
-            function myClick (e){
-                let breweryP = e.target
-                let ret = breweryP.innerText.replace('Add to WishlistAdd to Favorites', '')
-                let clickedBrewery = breweries.find(brew => brew.name == ret)
-                let newP = document.createElement('p')
-                  if (breweryP.children.length == 2 ){
-                    newP.innerText+=(`Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`)
-                    newP.className = 'semi-invisible' // This makes the info invisible at first
-                    breweryP.append(newP)} 
-                    //if its clicked and the extra info class is semi-invisble then change it to be visible
-                    if (breweryP && breweryP.children[2].className == 'semi-invisible'){
-                        breweryP.children[2].className = 'brewery-subinfo-class'}
-                    // else lets change the class to be semi-invisble & remove the element from the DOM
-                    else {breweryP.children[2].className = 'semi-invisible' && removePspace(breweryP) }
-                }
-                
-               
-               // Function will remove the extra Brewery info from the DOM
-                function removePspace(){
-               
-                let p = document.querySelector('p.brewery-subinfo-class')
-                let u = document.querySelector('p.undefined')
-                if(u){
-                  return  u.remove()
-                }
-                if (p ){
-                return p.remove()}
-            }
-            
-    
-            // Function will clear all the searched cities and Brewery info from the DOM with help of event listener on the button
-            function clearSearch(){
-                let clearBtn = document.createElement('button')
-                clearBtn.innerHTML = 'Clear Results'
-                clearBtn.className = 'clearing-button'
-                if (!document.querySelector('button.clearing-button'))
-                cityDiv.append(clearBtn)
-                clearBtn.addEventListener('click', clearCityDiv)
-            }
-            // Removes all searched cities and clears elements from DOM
-            function clearCityDiv(){
-                while (cityDiv.firstChild){
-                    cityDiv.removeChild(cityDiv.firstChild)
-                }
-            }
-
-            // Makes the click on Brewery instructions visible
-        function makeVisible(){
-            let h4 = document.getElementById('clickInstruct');
-            h4.className = 'showMoreInfo'
-        }
-
-
-
-       // Takes the user's city search input & then makes it Titleized Case ( to match the city's info in the Database)
-        let structure = function toTitleCase( str ) 
-        {
-            let nowStr = str.toString()
-           return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join(" ");
-        }
-         
-    
-function noLogOut(){
-    if(!window.localStorage.getItem('token')){
-       return document.getElementById('logout').style.display = 'none'
-    } else {
-       return document.getElementById('logout').style.display = 'box'
-    }
+// The function to show/hide more info on the fetched Brewery    
+function myClick (e){
+    let breweryP = e.target
+    let ret = breweryP.innerText.replace('Add to WishlistAdd to Favorites', '')
+    let clickedBrewery = breweries.find(brew => brew.name == ret)
+    let newP = document.createElement('p')
+      if(breweryP.children.length == 2 ){
+        newP.innerText+=(`Address: ${clickedBrewery.address},\n Phone Num: ${clickedBrewery.phoneNum}, \n Website: ${clickedBrewery.website},\n Description: ${clickedBrewery.description}`)
+         newP.className = 'semi-invisible' // This makes the info invisible at first
+          breweryP.append(newP)
+      } 
+        //if its clicked and the extra info class is semi-invisble then change it to be visible
+      if(breweryP && breweryP.children[2].className == 'semi-invisible'){
+         breweryP.children[2].className = 'brewery-subinfo-class'
+      }
+        // else lets change the class to be semi-invisble & remove the element from the DOM
+      else { breweryP.children[2].className = 'semi-invisible' && removePspace(breweryP)
+     }
 }
-noLogOut()
+ 
+// Function will remove the extra Brewery info from the DOM
+ function removePspace(){
+   let p = document.querySelector('p.brewery-subinfo-class')
+    let u = document.querySelector('p.undefined')
+     if(u){
+      return u.remove()
+     }
+     if(p){
+      return p.remove()}
+ }
+
+        // Function will clear all the searched cities and Brewery info from the DOM with help of event listener on the button
+function clearSearch(){
+  let clearBtn = document.createElement('button')
+    clearBtn.innerHTML = 'Clear Results'
+    clearBtn.className = 'clearing-button'
+  if(!document.querySelector('button.clearing-button'))
+     cityDiv.append(clearBtn)
+     clearBtn.addEventListener('click', clearCityDiv)
+}
+// Removes all searched cities and clears elements from DOM
+function clearCityDiv(){
+  while(cityDiv.firstChild){
+    cityDiv.removeChild(cityDiv.firstChild)
+  }
+}
+
+        // Makes the click on Brewery instructions visible
+function makeVisible(){
+    let h4 = document.getElementById('clickInstruct');
+    h4.className = 'showMoreInfo'
+}
+
+    // Takes the user's city search input & then makes it Titleized Case ( to match the city's info in the Database)
+let structure = function toTitleCase( str ){
+      let nowStr = str.toString()
+        return nowStr.split(/\s+/).map( s => s.charAt( 0 ).toUpperCase() + s.substring(1).toLowerCase() ).join(" ");
+}
+
+(function noLogOut(){
+  if(!window.localStorage.getItem('token')){
+    return document.getElementById('logout').style.display = 'none'
+  } else {
+     return document.getElementById('logout').style.display = 'box'
+  }
+})()
+
