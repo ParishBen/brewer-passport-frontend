@@ -353,11 +353,11 @@ function breweryLi(brewery, index){  //Listings Favorites in a list
         li.setAttribute('id', `favListLI-${index}`)
     let delBtn = document.createElement('button')
         delBtn.innerHTML = "Delete"
-        delBtn.addEventListener('click', deleteBrewFave)
-        li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
-        li.append(' ', delBtn)
+         delBtn.addEventListener('click', deleteBrewFave)
+          li.innerHTML += `${brewery.name} - Address: ${brewery.address ? brewery.address : "Not Listed"} - City: ${brewery.city} - Phone Num: ${brewery.phoneNum ? brewery.phoneNum : "Not Listed"} - Website: ${brewery.website ? brewery.website : "Not Listed"} - State: ${brewery.state ? brewery.state : "Not Listed"} - Description: ${brewery.description ? brewery.description : "Not Listed"} - Country: ${brewery.country ? brewery.country : "Not Listed"}`
+         li.append(' ', delBtn)
         ol.append(li)
-    ol.className = 'semi-invisible'
+     ol.className = 'semi-invisible'
 }
 
 function showFaveBannerList(){
@@ -408,25 +408,23 @@ function renderFavoriteList(theCurrentUserList){
     let breweryParent = e.target.parentElement
     let cutBrewery = breweryParent.innerText.toString()
     let brewName = cutBrewery.substring(0, cutBrewery.indexOf(' - Address'))
-   
-        if(brewName.match(/[#/]/))
-           brewName = brewName.replace('#', '%23').replace('/','%2f')
-    
-    return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), { //Delete Route favorites/:username/:brewName
+      if(brewName.match(/[#/]/)) // IF brewery name has "#" or "/" we replace with URL code
+         brewName = brewName.replace('#', '%23').replace('/','%2f')
+      return fetch(favoritelistURL+grabUserName()+'/'+brewName.toString(), { //Delete Route favorites/:username/:brewName
         method: 'DELETE',
         headers: {
             'Content-Type':'application/json',
             Accept:'application/json'  
-           },
-    })
-    .then(()=>fetchFavoriteList())
-    .then(()=>fetchFavoriteList())
-    .then(function(){
-        let ps = document.querySelectorAll('p.brewery-info-class')
-        for (p of ps){
-            let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
-            brewName === titlep ? p.style.color = "black" : ''
-        }
-    })
-    .catch(err=> console.log(err))
-} 
+        },
+        })
+        .then(()=>fetchFavoriteList())
+        .then(()=>fetchFavoriteList())
+        .then(function(){
+          let ps = document.querySelectorAll('p.brewery-info-class')
+            for(p of ps){
+              let titlep = p.innerText.replace('Add to WishlistAdd to Favorites', '')
+              brewName === titlep ? p.style.color = "black" : ''
+            }
+        })
+        .catch(err=> console.log(err))
+  } 
