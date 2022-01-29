@@ -7,26 +7,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/style.css" rel="stylesheet"-->
     </head>
-
+    
     <body>
-        <nav> <button id="logout" >Log Out</button> </nav> <br>
-     <div id=welcome> </div>
-        <form id='user-form' `${!window.localStorage.token  ? style ='display:box' : style = 'display:none'}` >Please Sign Up first: <input type = "text" placeholder= "Your Name" id = 'users-name' name='users-name'><input type = "text" placeholder= "Username" id= "username" name='username'><input type="submit" name='Sign In'> </form>
-        <!-- <img id='stock', alt='Cheers!', src="https://coolmaterial.com/wp-content/uploads/2015/12/dogfishhead.jpg"> -->
-       <h1> Welcome To Brewery Passport-<br> Many Cheers On Your Journey! </h1>
-          <h3 id='greet'>Which city are you off to? </h3>
-         <form id="city-form"> <input type = "text" placeholder= "Destination City" id="city-search-input"> <input type = "submit" name="Search" id='searchcity'>
+     <nav> <button id="logout" >Log Out</button></nav> 
+      <br>
+       <div id=welcome> </div>
+         <form id='user-form' `${!window.localStorage.token  ? style ='display:box' : style = 'display:none'}` >
+            Please Sign Up first: <input type = "text" placeholder= "Your Name" id = 'users-name' name='users-name'>
+            <input type = "text" placeholder= "Username" id= "username" name='username'>
+            <input type="submit" name='Sign In'>
          </form>
+        <!-- <img id='stock', alt='Cheers!', src="https://coolmaterial.com/wp-content/uploads/2015/12/dogfishhead.jpg"> -->
+          <h1> Welcome To Brewery Passport-<br> Many Cheers On Your Journey! </h1>
+            <h3 id='greet'>Which city are you off to? </h3>
+              <form id="city-form"> 
+                  <input type = "text" placeholder= "Destination City" id="city-search-input"> 
+                  <input type = "submit" name="Search" id='searchcity'>
+              </form>
 
-            <h4 id="clickInstruct" class="semi-invisible">Click on Brewery to show/hide more info</h4>
-
-                <div id="city-div"></div>
-                <div id="wishListDiv"></div>
-                <div id="favoriteListDiv"></div>
-
-   <img id='unlogged', alt="secondCheers"> 
+                <h4 id="clickInstruct" class="semi-invisible">Click on Brewery to show/hide more info</h4>
+                    <div id="city-div"></div>
+                    <div id="wishListDiv"></div>
+                    <div id="favoriteListDiv"></div>
+              <img id='unlogged', alt="secondCheers"> 
     </body>
-        <script src="./src/index.js"></script>
-        <script src="./src/brewery.js"></script>
-        <script src="./src/user.js"></script>
+    <script src="./src/index.js"></script>
+   <script src="./src/brewery.js"></script>
+  <script src="./src/user.js"></script>
 </html>
